@@ -8,7 +8,7 @@ public class Practica1_201700988 {
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
-        ventana.setTitle("RegexJava");
+        ventana.setTitle("RegexJava 0.1");
     }
     
 }

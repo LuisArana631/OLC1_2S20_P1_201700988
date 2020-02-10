@@ -5,15 +5,17 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class IDE_Window extends javax.swing.JFrame {
 
-    JFileChooser fileSelecter = new JFileChooser();
+    JFileChooser fileSelector = new JFileChooser();
     File fileSelect;
     FileInputStream fileInput;
     FileOutputStream fileOutput;
 
     public IDE_Window() {
+        fileSelector.setFileFilter(new FileNameExtensionFilter("Compi File (*.er)", "er"));
         initComponents();
     }
 
@@ -183,9 +185,9 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //Open File Function
-        if (fileSelecter.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
-            fileSelect = fileSelecter.getSelectedFile();
+        //Open File Function        
+        if (fileSelector.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
+            fileSelect = fileSelector.getSelectedFile();
             if (fileSelect.canRead()) {
                 String documento = openFile(fileSelect);
                 txtFile.setText(documento);
@@ -194,12 +196,12 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        //Save As File Function
+        //Save As File Function        
         saveAsFile();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        //Save File Function
+        //Save File Function        
         if (fileSelect != null) {
             String documento = txtFile.getText();
             saveFile(fileSelect, documento);
@@ -211,8 +213,8 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void saveAsFile() {
-        if (fileSelecter.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
-            fileSelect = fileSelecter.getSelectedFile();
+        if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
+            fileSelect = fileSelector.getSelectedFile();
             String documento = txtFile.getText();
             String mensaje = saveFile(fileSelect, documento);
             if (mensaje != null) {
@@ -225,14 +227,23 @@ public class IDE_Window extends javax.swing.JFrame {
 
     private String saveFile(File archivo, String contenido) {
         String mensaje = null;
+        String fileName = "";
         try {
-            fileOutput = new FileOutputStream(archivo);
+            String nameFile = archivo.toString();
+            if (!nameFile.endsWith(".er")) {
+                nameFile += ".er";
+                fileOutput = new FileOutputStream(nameFile);
+            } else {
+                fileOutput = new FileOutputStream(archivo);
+            }
             byte[] txtBytes = contenido.getBytes();
             fileOutput.write(txtBytes);
-            mensaje = "Archivo " + fileSelect.getName() + " guardado exitosamente.";
+            fileName = fileSelect.getName().replace(".er", "");
+            mensaje = "Archivo " + fileName + " guardado exitosamente.";
         } catch (Exception e) {
 
         }
+        this.setTitle(fileName + " - RegexJava 0.1");
         return mensaje;
     }
 
@@ -248,6 +259,8 @@ public class IDE_Window extends javax.swing.JFrame {
         } catch (Exception e) {
 
         }
+        String fileName = fileSelect.getName().replace(".er", "");
+        this.setTitle(fileName + " - RegexJava 0.1");
         return contenido;
     }
 
