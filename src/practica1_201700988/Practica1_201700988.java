@@ -1,6 +1,8 @@
 
 package practica1_201700988;
 
+import analizador.token;
+
 public class Practica1_201700988 {
 
     public static void main(String[] args) {
@@ -9,6 +11,7 @@ public class Practica1_201700988 {
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
         ventana.setTitle("RegexJava 0.1");
+        
     }
     
 }
