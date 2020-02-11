@@ -12,7 +12,6 @@ public class token {
         ASIGNACION,
         LLAVE_IZQ,
         LLAVE_DER,
-        MACRO,
         CAMBIO_SEGMENTO,
         CONCATENACION,
         DISYUNCION,
@@ -21,13 +20,14 @@ public class token {
         CERRADURA_DUDA,
         //Token de Extras
         Numero,
+        Caracter,
+        Simbolo,
         Identificador,
         Comentario_Lineal,
         Comentario_Multilinea,
         Cadena,
-        Simbolo,
-        Caracter,
         Ultimo,
+        Macro,
         //Token de Errores
         Error_Lexico
     }
@@ -35,10 +35,12 @@ public class token {
     //Valores para los tokens de los archivos
     private tipo tipoToken;
     private String valor;
+    private int linea;
 
-    public void newToken(tipo tokenType, String auxLexico) {
+    public token(tipo tokenType, String auxLexico, int linea) {
         this.tipoToken = tokenType;
         this.valor = auxLexico;
+        this.linea = linea;
     }
 
     public tipo getTipo() {
@@ -49,6 +51,10 @@ public class token {
         return valor;
     }
 
+    public int getLinea() {
+        return linea;
+    }
+
     public String getTipoString() {
         switch (tipoToken) {
             case CONJ:
@@ -57,14 +63,14 @@ public class token {
                 return "Coma";
             case DOS_PUNTOS:
                 return "Dos Puntos";
+            case PUNTO_COMA:
+                return "Punto y coma";
             case ASIGNACION:
                 return "Asignacion";
             case LLAVE_IZQ:
                 return "Llave Izquierda";
             case LLAVE_DER:
                 return "Llave Derecha";
-            case MACRO:
-                return "Macro Conjunto";
             case CAMBIO_SEGMENTO:
                 return "Cambio Segmento";
             case CONCATENACION:
@@ -78,7 +84,7 @@ public class token {
             case CERRADURA_DUDA:
                 return "Cerradura ?";
             case Numero:
-                return "Numero";
+                return "Numeros";
             case Identificador:
                 return "Identificador";
             case Comentario_Lineal:
@@ -87,14 +93,16 @@ public class token {
                 return "Comentario Multilinea";
             case Cadena:
                 return "Cadena";
-            case Simbolo:
-                return "Simbolo";
-            case Caracter:
-                return "Caracter";
             case Ultimo:
                 return "Ultimo";
             case Error_Lexico:
                 return "Error Lexico";
+            case Macro:
+                return "Macro";
+            case Simbolo:
+                return "Simbolos";
+            case Caracter:
+                return "Caracteres";
             default:
                 return "Desconocido";
         }
