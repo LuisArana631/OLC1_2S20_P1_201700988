@@ -12,7 +12,7 @@ public class analisisLexico {
 
     public ArrayList<token> Scanner(String entrada) {
         entrada = entrada + "#";
-        salida = new ArrayList<token>();
+        salida = new ArrayList<>();
         estado = 0;
         auxiliarLexico = "";
 
@@ -21,296 +21,300 @@ public class analisisLexico {
             caracter = entrada.charAt(i);
             int valChar = caracter;
             System.out.println("--------------------------------------------------");
-            System.out.println("Variable auxiiliar: "  + auxiliarLexico);
+            System.out.println("Variable auxiiliar: " + auxiliarLexico);
             System.out.println("Evaluando: " + caracter + " con valor " + valChar);
             System.out.println("Estado: " + estado);
             System.out.println("--------------------------------------------------");
-            switch (estado) {
-                case 0:
-                    //Evaluar si viene una letra
-                    if (Character.isLetter(caracter)) {
-                        estado = 7;
-                        auxiliarLexico += caracter;
-                        break;
-                    }//Evaluar numero
-                    else if (Character.isLetter(caracter)) {
-                        estado = 3;
-                        auxiliarLexico += caracter;
-                    }//Evaluar Simbolos
-                    else if (caracter >= 32 && caracter <= 125) {
-                        //Evaluar si viene /
+            //Omitir caracter 13
+            if (caracter != 13) {
+                switch (estado) {
+                    case 0:
+                        //Evaluar si viene una letra
+                        if (Character.isLetter(caracter)) {
+                            estado = 7;
+                            auxiliarLexico += caracter;
+                            break;
+                        }//Evaluar numero
+                        else if (Character.isLetter(caracter)) {
+                            estado = 3;
+                            auxiliarLexico += caracter;
+                        }//Evaluar Simbolos
+                        else if (caracter >= 32 && caracter <= 125) {
+                            //Evaluar si viene /
+                            if (caracter == 47) {
+                                estado = 1;
+                                auxiliarLexico += caracter;
+                                break;
+                            } //Evaluar si viene <
+                            else if (caracter == 60) {
+                                estado = 4;
+                                auxiliarLexico += caracter;
+                                break;
+                            } //Evaluar si viene "
+                            else if (caracter == 34) {
+                                estado = 5;
+                                auxiliarLexico += caracter;
+                                break;
+                            } //Evaluar si viene %
+                            else if (caracter == 37) {
+                                estado = 6;
+                                auxiliarLexico += caracter;
+                                break;
+                            } //Evaluar fin del analisis
+                            else if (caracter == 35 && i == entrada.length() - 1) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.Ultimo);
+                                System.out.println("Analisis Lexico terminado.");
+                                break;
+                            } //Evaluar -
+                            else if (caracter == 45) {
+                                estado = 14;
+                                auxiliarLexico += caracter;
+                                break;
+                            } //Evaluar llave {
+                            else if (caracter == 123) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.LLAVE_IZQ);
+                                break;
+                            } //Evaluar llave } 
+                            else if (caracter == 125) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.LLAVE_DER);
+                                break;
+                            } //Evaluar Concatenacion .
+                            else if (caracter == 46) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.CONCATENACION);
+                                break;
+                            } //Evaluar Disyuncion |
+                            else if (caracter == 124) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.DISYUNCION);
+                                break;
+                            } //Evaluar cerradura *
+                            else if (caracter == 42) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.CERRADURA_KLEENE);
+                                break;
+                            } //Evaluar cerradura +
+                            else if (caracter == 43) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.CERRADURA_POSITIVA);
+                                break;
+                            } //Evaluar cerradura ?
+                            else if (caracter == 63) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.CERRADURA_DUDA);
+                                break;
+                            } //Evaluar coma
+                            else if (caracter == 44) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.COMA);
+                                break;
+                            } //Evaluar dos puntos
+                            else if (caracter == 58) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.DOS_PUNTOS);
+                                break;
+                            } //Evaluar punto y coma
+                            else if (caracter == 59) {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.PUNTO_COMA);
+                                break;
+                            }//Espacio 
+                            else if (caracter == 32) {
+                                //No tomar en cuenta estos caracteres
+                                break;
+                            } else {
+                                auxiliarLexico += caracter;
+                                addToken(tipo.Simbolo);
+                                break;
+                            }
+                        } //Evaluar salto de linea
+                        else if (caracter == 10 || caracter == 13) {
+                            linea++;
+                            break;
+                        } //Evaluar el macro ~
+                        else if (caracter == 126) {
+                            auxiliarLexico += caracter;
+                            addToken(tipo.Macro);
+                            break;
+                        } else {
+                            addError(tipo.Error_Lexico, String.valueOf(caracter));
+                            break;
+                        }
+
+                    case 1:
+                        //Evaluar si caracter es /
                         if (caracter == 47) {
-                            estado = 1;
+                            estado = 8;
                             auxiliarLexico += caracter;
-                            break;
-                        } //Evaluar si viene <
-                        else if (caracter == 60) {
-                            estado = 4;
-                            auxiliarLexico += caracter;
-                            break;
-                        } //Evaluar si viene "
-                        else if (caracter == 34) {
-                            estado = 5;
-                            auxiliarLexico += caracter;
-                            break;
-                        } //Evaluar si viene %
-                        else if (caracter == 37) {
-                            estado = 6;
-                            auxiliarLexico += caracter;
-                            break;
-                        } //Evaluar fin del analisis
-                        else if (caracter == 35 && i == entrada.length() - 1) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.Ultimo);
-                            System.out.println("Analisis Lexico terminado.");
-                            break;
-                        } //Evaluar -
-                        else if (caracter == 45) {
-                            estado = 14;
-                            auxiliarLexico += caracter;
-                            break;
-                        } //Evaluar llave {
-                        else if (caracter == 123) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.LLAVE_IZQ);
-                            break;
-                        } //Evaluar llave } 
-                        else if (caracter == 125) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.LLAVE_DER);
-                            break;
-                        } //Evaluar Concatenacion .
-                        else if (caracter == 46) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.CONCATENACION);
-                            break;
-                        } //Evaluar Disyuncion |
-                        else if (caracter == 124) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.DISYUNCION);
-                            break;
-                        } //Evaluar cerradura *
-                        else if (caracter == 42) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.CERRADURA_KLEENE);
-                            break;
-                        } //Evaluar cerradura +
-                        else if (caracter == 43) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.CERRADURA_POSITIVA);
-                            break;
-                        } //Evaluar cerradura ?
-                        else if (caracter == 63) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.CERRADURA_DUDA);
-                            break;
-                        } //Evaluar coma
-                        else if (caracter == 44) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.COMA);
-                            break;
-                        } //Evaluar dos puntos
-                        else if (caracter == 58) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.DOS_PUNTOS);
-                            break;
-                        } //Evaluar punto y coma
-                        else if (caracter == 59) {
-                            auxiliarLexico += caracter;
-                            addToken(tipo.PUNTO_COMA);
-                            break;
-                        }//Espacio 
-                        else if (caracter == 32) {
-                            //No tomar en cuenta estos caracteres
                             break;
                         } else {
-                            auxiliarLexico += caracter;
                             addToken(tipo.Simbolo);
+                            i--;
                             break;
                         }
-                    } //Evaluar salto de linea
-                    else if (caracter == 10 || caracter == 13) {
-                        linea++;
-                        break;
-                    } //Evaluar el macro ~
-                    else if (caracter == 126) {
-                        auxiliarLexico += caracter;
-                        addToken(tipo.Macro);
-                        break;
-                    } else {
-                        addError(tipo.Error_Lexico, String.valueOf(caracter));
-                        break;
-                    }
 
-                case 1:
-                    //Evaluar si caracter es /
-                    if (caracter == 47) {
-                        estado = 8;
-                        auxiliarLexico += caracter;
+                    case 2:
+                        //Aceptacion
                         break;
-                    } else {
-                        addToken(tipo.Simbolo);
-                        i--;
-                        break;
-                    }
 
-                case 2:
-                    //Aceptacion
-                    break;
-
-                case 3:
-                    //Evaluar la cadena de digitos
-                    if (Character.isDigit(caracter)) {
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        addToken(tipo.Numero);
-                        i--;
-                        break;
-                    }
-
-                case 4:
-                    //Evaluar el siguiente caracter !
-                    if (caracter == 33) {
-                        estado = 9;
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        addToken(tipo.Simbolo);
-                        i--;
-                        break;
-                    }
-
-                case 5:
-                    //Evaluar que venga cualquier contenido hasta encontrar "
-                    if (caracter == 34) {
-                        auxiliarLexico += caracter;
-                        addToken(tipo.Cadena);
-                        break;
-                    } else {
-                        auxiliarLexico += caracter;
-                        break;
-                    }
-
-                case 6:
-                    //Evaluar caracter %
-                    if (caracter == 37) {
-                        estado = 10;
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        addToken(tipo.Simbolo);
-                        i--;
-                        break;
-                    }
-
-                case 7:
-                    //Evaluar letra o identificador
-                    if (Character.isDigit(caracter)) {
-                        auxiliarLexico += caracter;
-                        break;
-                    } else if (Character.isLetter(caracter)) {
-                        auxiliarLexico += caracter;
-                        break;
-                    } else if (caracter == 95) {
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        if (auxiliarLexico.equals("CONJ")) {
-                            addToken(tipo.CONJ);
-                        } else if (auxiliarLexico.length() == 1) {
-                            addToken(tipo.Caracter);
+                    case 3:
+                        //Evaluar la cadena de digitos
+                        if (Character.isDigit(caracter)) {
+                            auxiliarLexico += caracter;
+                            break;
                         } else {
-                            addToken(tipo.Identificador);
+                            addToken(tipo.Numero);
+                            i--;
+                            break;
                         }
-                        i--;
-                        break;
-                    }
 
-                case 8:
-                    //Evaluar salto de linea
-                    if (caracter == 10) {
-                        System.out.println("Comentario Linea: " + auxiliarLexico);
-                        addToken(tipo.Comentario_Lineal);
-                        break;
-                    } else {
-                        auxiliarLexico += caracter;
-                        break;
-                    }
+                    case 4:
+                        //Evaluar el siguiente caracter !
+                        if (caracter == 33) {
+                            estado = 9;
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            addToken(tipo.Simbolo);
+                            i--;
+                            break;
+                        }
 
-                case 9:
-                    //Evaluar comentario lineal contenido !
-                    if (caracter == 33) {
-                        estado = 11;
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        auxiliarLexico += caracter;
-                        break;
-                    }
+                    case 5:
+                        //Evaluar que venga cualquier contenido hasta encontrar "
+                        if (caracter == 34) {
+                            auxiliarLexico += caracter;
+                            addToken(tipo.Cadena);
+                            break;
+                        } else {
+                            auxiliarLexico += caracter;
+                            break;
+                        }
 
-                case 10:
-                    //Evaluar cambio de segmento \n
-                    if (caracter == 10) {
-                        estado = 12;
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        addError(tipo.Error_Lexico, auxiliarLexico);
-                        i--;
-                        break;
-                    }
+                    case 6:
+                        //Evaluar caracter %
+                        if (caracter == 37) {
+                            estado = 10;
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            addToken(tipo.Simbolo);
+                            i--;
+                            break;
+                        }
 
-                case 11:
-                    //Evaluar contenido de comentario multilineal >
-                    if (caracter == 62) {
-                        auxiliarLexico += caracter;
-                        System.out.println("Comentario Linea: " + auxiliarLexico);
-                        addToken(tipo.Comentario_Multilinea);
-                        break;
-                    } else {
-                        estado = 9;
-                        auxiliarLexico += caracter;
-                        break;
-                    }
+                    case 7:
+                        //Evaluar letra o identificador
+                        if (Character.isDigit(caracter)) {
+                            auxiliarLexico += caracter;
+                            break;
+                        } else if (Character.isLetter(caracter)) {
+                            auxiliarLexico += caracter;
+                            break;
+                        } else if (caracter == 95) {
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            if (auxiliarLexico.equals("CONJ")) {
+                                addToken(tipo.CONJ);
+                            } else if (auxiliarLexico.length() == 1) {
+                                addToken(tipo.Caracter);
+                            } else {
+                                addToken(tipo.Identificador);
+                            }
+                            i--;
+                            break;
+                        }
 
-                case 12:
-                    //Evaluar siguiente %
-                    if (caracter == 37) {
-                        estado = 13;
-                        auxiliarLexico += caracter;
-                        break;
-                    } else {
-                        addError(tipo.Error_Lexico, auxiliarLexico);
-                        i--;
-                        break;
-                    }
+                    case 8:
+                        //Evaluar salto de linea
+                        if (caracter == 10) {
+                            System.out.println("Comentario Linea: " + auxiliarLexico);
+                            addToken(tipo.Comentario_Lineal);
+                            break;
+                        } else {
+                            auxiliarLexico += caracter;
+                            break;
+                        }
 
-                case 13:
-                    //Evaluar siguiente %
-                    if (caracter == 37) {
-                        auxiliarLexico += caracter;
-                        addToken(tipo.CAMBIO_SEGMENTO);
-                        break;
-                    } else {
-                        addError(tipo.Error_Lexico, auxiliarLexico);
-                        break;
-                    }
+                    case 9:
+                        //Evaluar comentario lineal contenido !
+                        if (caracter == 33) {
+                            estado = 11;
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            auxiliarLexico += caracter;
+                            break;
+                        }
 
-                case 14:
-                    //Evaluar >
-                    if (caracter == 62) {
-                        auxiliarLexico += caracter;
-                        addToken(tipo.ASIGNACION);
-                        break;
-                    } else {
-                        addToken(tipo.Simbolo);
-                        i--;
-                        break;
-                    }
+                    case 10:
+                        //Evaluar cambio de segmento \n
+                        if (caracter == 10) {
+                            estado = 12;
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            addError(tipo.Error_Lexico, auxiliarLexico);
+                            i--;
+                            break;
+                        }
 
+                    case 11:
+                        //Evaluar contenido de comentario multilineal >
+                        if (caracter == 62) {
+                            auxiliarLexico += caracter;
+                            System.out.println("Comentario Linea: " + auxiliarLexico);
+                            addToken(tipo.Comentario_Multilinea);
+                            break;
+                        } else {
+                            estado = 9;
+                            auxiliarLexico += caracter;
+                            break;
+                        }
+
+                    case 12:
+                        //Evaluar siguiente %
+                        if (caracter == 37) {
+                            estado = 13;
+                            auxiliarLexico += caracter;
+                            break;
+                        } else {
+                            addError(tipo.Error_Lexico, auxiliarLexico);
+                            i--;
+                            break;
+                        }
+
+                    case 13:
+                        //Evaluar siguiente %
+                        if (caracter == 37) {
+                            auxiliarLexico += caracter;
+                            addToken(tipo.CAMBIO_SEGMENTO);
+                            break;
+                        } else {
+                            addError(tipo.Error_Lexico, auxiliarLexico);
+                            break;
+                        }
+
+                    case 14:
+                        //Evaluar >
+                        if (caracter == 62) {
+                            auxiliarLexico += caracter;
+                            addToken(tipo.ASIGNACION);
+                            break;
+                        } else {
+                            addToken(tipo.Simbolo);
+                            i--;
+                            break;
+                        }
+
+                }
             }
         }
+
         return salida;
 
     }
@@ -331,9 +335,9 @@ public class analisisLexico {
     }
 
     public void imprimirLista() {
-        for (token lexema : salida) {
+        salida.forEach((lexema) -> {
             System.out.println(lexema.getTipoString() + " <-> \"  " + lexema.getValor() + "  \"");
-        }
+        });
     }
 
 }

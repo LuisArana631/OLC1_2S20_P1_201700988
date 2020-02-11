@@ -3,6 +3,7 @@ package practica1_201700988;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -194,6 +195,7 @@ public class IDE_Window extends javax.swing.JFrame {
         if (fileSelector.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             fileSelect = fileSelector.getSelectedFile();
             if (fileSelect.canRead()) {
+                
                 String documento = openFile(fileSelect);
                 txtFile.setText(documento);
             }
@@ -251,7 +253,7 @@ public class IDE_Window extends javax.swing.JFrame {
             fileOutput.write(txtBytes);
             fileName = fileSelect.getName().replace(".er", "");
             mensaje = "Archivo " + fileName + " guardado exitosamente.";
-        } catch (Exception e) {
+        } catch (IOException e) {
 
         }
         this.setTitle(fileName + " - RegexJava 0.1");
@@ -267,11 +269,12 @@ public class IDE_Window extends javax.swing.JFrame {
                 char caracter = (char) ascii;
                 contenido += caracter;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
 
         }
         String fileName = fileSelect.getName().replace(".er", "");
         this.setTitle(fileName + " - RegexJava 0.1");
+
         return contenido;
     }
 
@@ -303,10 +306,8 @@ public class IDE_Window extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IDE_Window().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new IDE_Window().setVisible(true);
         });
     }
 
