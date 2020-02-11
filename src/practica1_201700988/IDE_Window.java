@@ -72,6 +72,11 @@ public class IDE_Window extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 180, 40));
 
         jButton2.setText("Analizar Entradas");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 180, 40));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Consola de Salida"));
@@ -211,6 +216,12 @@ public class IDE_Window extends javax.swing.JFrame {
             saveAsFile();
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String entrada = txtFile.getText();
+        Practica1_201700988.analizador.Scanner(entrada);
+        Practica1_201700988.analizador.imprimirLista();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void saveAsFile() {
         if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
