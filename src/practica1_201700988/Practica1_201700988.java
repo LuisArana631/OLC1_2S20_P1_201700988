@@ -1,6 +1,7 @@
 package practica1_201700988;
 
 import analizador.analisisLexico;
+import esctructuras.classConj;
 import esctructuras.classER;
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class Practica1_201700988 {
     //Instancia de datos
     public static int conteoAnalisis = 0;
     public static ArrayList<classER> listER = new ArrayList<>();
+    public static ArrayList<classConj> listConj = new ArrayList<>();
 
     public static void main(String[] args) {
         IDE_Window ventana = new IDE_Window();
