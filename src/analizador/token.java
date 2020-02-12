@@ -100,9 +100,9 @@ public class token {
             case Macro:
                 return "Macro";
             case Simbolo:
-                return "Simbolos";
+                return "Simbolo";
             case Caracter:
-                return "Caracteres";
+                return "Caracter";
             default:
                 return "Desconocido";
         }

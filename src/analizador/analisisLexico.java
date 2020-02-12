@@ -2,6 +2,7 @@ package analizador;
 
 import analizador.token.tipo;
 import java.util.ArrayList;
+import javax.swing.JTextArea;
 
 public class analisisLexico {
 
@@ -19,12 +20,6 @@ public class analisisLexico {
         char caracter;
         for (int i = 0; i < entrada.length(); i++) {
             caracter = entrada.charAt(i);
-            int valChar = caracter;
-            System.out.println("--------------------------------------------------");
-            System.out.println("Variable auxiiliar: " + auxiliarLexico);
-            System.out.println("Evaluando: " + caracter + " con valor " + valChar);
-            System.out.println("Estado: " + estado);
-            System.out.println("--------------------------------------------------");
             //Omitir caracter 13
             if (caracter != 13) {
                 switch (estado) {
@@ -40,6 +35,15 @@ public class analisisLexico {
                             auxiliarLexico += caracter;
                         }//Evaluar Simbolos
                         else if (caracter >= 32 && caracter <= 125) {
+                            try {
+                                if (126 == (entrada.charAt(i + 1)) || 126 == (entrada.charAt(i - 1)) || 44 == (entrada.charAt(i + 1)) || 44 == entrada.charAt(i - 1)) {
+                                    auxiliarLexico += caracter;
+                                    addToken(tipo.Simbolo);
+                                    break;
+                                }
+                            } catch (Exception e) {
+
+                            }
                             //Evaluar si viene /
                             if (caracter == 47) {
                                 estado = 1;
@@ -232,7 +236,6 @@ public class analisisLexico {
                     case 8:
                         //Evaluar salto de linea
                         if (caracter == 10) {
-                            System.out.println("Comentario Linea: " + auxiliarLexico);
                             addToken(tipo.Comentario_Lineal);
                             break;
                         } else {
@@ -267,7 +270,6 @@ public class analisisLexico {
                         //Evaluar contenido de comentario multilineal >
                         if (caracter == 62) {
                             auxiliarLexico += caracter;
-                            System.out.println("Comentario Linea: " + auxiliarLexico);
                             addToken(tipo.Comentario_Multilinea);
                             break;
                         } else {
@@ -334,10 +336,13 @@ public class analisisLexico {
         estado = 0;
     }
 
-    public void imprimirLista() {
-        salida.forEach((lexema) -> {
-            System.out.println(lexema.getTipoString() + " <-> \"  " + lexema.getValor() + "  \"");
+    public void imprimirLista(JTextArea consola) {
+        consola.setText("--------Resultado de Análisis Lexico---------\n\n");
+        salida.forEach((token lexema) -> {
+            consola.setText(consola.getText() + lexema.getTipoString() + " <-> " + lexema.getValor() + "\n");
+            consola.setText(consola.getText() + "---------------------------------------------------------\n");
         });
+        consola.setText(consola.getText() + "-------------------Fin de Reporte------------------\n");
     }
 
 }

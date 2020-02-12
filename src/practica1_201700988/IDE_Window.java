@@ -32,6 +32,8 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtRegular = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -56,7 +58,7 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -67,7 +69,7 @@ public class IDE_Window extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 400, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 490, -1));
 
         jButton1.setText("Generar Autómatas");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 180, 40));
@@ -78,7 +80,7 @@ public class IDE_Window extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 180, 40));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 180, 40));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Consola de Salida"));
 
@@ -86,24 +88,31 @@ public class IDE_Window extends javax.swing.JFrame {
         txtConsola.setRows(5);
         jScrollPane2.setViewportView(txtConsola);
 
+        txtRegular.setColumns(20);
+        txtRegular.setRows(5);
+        jScrollPane3.setViewportView(txtRegular);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 876, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 970, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Distribución"));
 
@@ -118,7 +127,7 @@ public class IDE_Window extends javax.swing.JFrame {
             .addGap(0, 367, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 180, 390));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 180, 390));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Imágenes"));
 
@@ -133,7 +142,7 @@ public class IDE_Window extends javax.swing.JFrame {
             .addGap(0, 367, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 10, 260, 390));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, 260, 390));
 
         jMenu1.setText("Archivo");
 
@@ -222,7 +231,7 @@ public class IDE_Window extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
-        Practica1_201700988.analizador.imprimirLista();
+        Practica1_201700988.analizador.imprimirLista(txtConsola);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void saveAsFile() {
@@ -273,8 +282,8 @@ public class IDE_Window extends javax.swing.JFrame {
 
         }
         String fileName = fileSelect.getName().replace(".er", "");
-        this.setTitle(fileName + " - RegexJava 0.1");
-
+        this.setTitle(fileName + " - RegexJava 0.1");        
+        
         return contenido;
     }
 
@@ -328,7 +337,9 @@ public class IDE_Window extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea txtConsola;
     private javax.swing.JEditorPane txtFile;
+    private javax.swing.JTextArea txtRegular;
     // End of variables declaration//GEN-END:variables
 }

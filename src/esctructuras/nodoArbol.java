@@ -1,5 +1,6 @@
+
 package esctructuras;
 
-public class arbol {
+public class nodoArbol {
     
 }
