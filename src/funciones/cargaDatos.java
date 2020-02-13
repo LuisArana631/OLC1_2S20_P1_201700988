@@ -1,0 +1,202 @@
+package funciones;
+
+import analizador.token;
+import esctructuras.classConj;
+import esctructuras.classER;
+import java.util.ArrayList;
+import java.util.Iterator;
+import practica1_201700988.Practica1_201700988;
+
+public class cargaDatos {
+
+    private String idActual;
+
+    public void cargarDatos(ArrayList<token> listToken) {
+        int state = 0;
+        int stateConj = 0;
+        int stateER = 0;
+
+        Iterator<token> iteradorTokens = listToken.iterator();
+        while (iteradorTokens.hasNext()) {
+            token actualToken = iteradorTokens.next();
+            
+            switch (state) {
+                //Decidir que insertar
+                case 0:
+                    if (actualToken.getTipoString().equals("Palabra Reservada")) {
+                        state = 1;
+                    } else if (actualToken.getTipoString().equals("Identificador")) {
+                        if (stateER == 0) {
+                            state = 2;
+                            idActual = actualToken.getValor();
+                            if (!existeER(idActual)) {
+                                Practica1_201700988.listER.add(new classER(idActual));
+                            }
+                        } else if (!existeER(idActual)) {
+                            //No hacer nada, incluso reportar que no hay ER para evaluar
+                        } else {
+                            state = 2;
+                            idActual = actualToken.getValor();
+                        }
+                    } else if (actualToken.getTipoString().equals("Cambio de Segmento")) {
+                        if (stateER == 0) {
+                            stateER = 1;
+                        } else {
+                            stateER = 0;
+                        }
+                    } else {
+                        //Nada
+                    }
+                    break;
+                //Insertar conjunto
+                case 1:
+                    if (actualToken.getTipoString().equals("Identificador")) {
+                        idActual = actualToken.getValor();
+                        if (!existeConj(idActual)) {
+                            Practica1_201700988.listConj.add(new classConj(idActual));
+                        }
+                    } else if (actualToken.getTipoString().equals("Macro")) {
+                        stateConj = 0;
+                    } else if (actualToken.getTipoString().equals("Coma")) {
+                        stateConj = 1;
+                    } else if (actualToken.getTipoString().equals("Punto y coma")) {
+                        state = 0;
+                    } else {
+                        switch (stateConj) {
+                            //Cuando se debe calcular el conjunto
+                            case 0:
+                                if (actualToken.getTipoString().equals("Simbolo")) {
+                                    if (Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().size() != 0) {
+                                        char inicio = Practica1_201700988.listConj.get(posConj(idActual)).getStart();
+                                        char fin = actualToken.getValor().charAt(0);
+
+                                        for (int i = (int) inicio; i < (int) fin + 1; i++) {
+                                            if (!Character.isLetterOrDigit((char) i)) {
+                                                Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add((char) i);
+                                            }
+                                        }
+                                    } else {
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                    }
+                                } else if (actualToken.getTipoString().equals("Caracter")) {
+                                    if (Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().size() != 0) {
+                                        char inicio = Practica1_201700988.listConj.get(posConj(idActual)).getStart();
+                                        char fin = actualToken.getValor().charAt(0);
+
+                                        for (int i = (int) inicio; i < (int) fin + 1; i++) {
+                                            if (Character.isLetter((char) i)) {
+                                                Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add((char) i);
+                                            }
+                                        }
+                                    } else {
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                    }
+                                } else if (actualToken.getTipoString().equals("Numero")) {
+                                    if (Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().size() != 0) {
+                                        int inicio = Integer.parseInt(Practica1_201700988.listConj.get(posConj(idActual)).getStringStart());
+                                        int fin = Integer.parseInt(actualToken.getValor());
+
+                                        for (int i = inicio; i < fin + 1; i++) {
+                                            Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(i);
+                                        }
+                                    } else {
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                    }
+                                }
+                                break;
+                            //Cuando es una coma el delimitador
+                            case 1:
+                                if (actualToken.getTipoString().equals("Simbolo")) {
+                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                } else if (actualToken.getTipoString().equals("Caracter")) {
+                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                } else if (actualToken.getTipoString().equals("Numero")) {
+                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                //Insertar er o lexema
+                case 2:
+                    if (actualToken.getTipoString().equals("Identificador")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Cerradura *")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Cerradura +")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Cerradura ?")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Disyuncion")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Conjuncion")) {
+                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
+                    } else if (actualToken.getTipoString().equals("Cadena")) {
+                        switch (stateER) {
+                            //Ingresar ER
+                            case 0:
+                                Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor());
+                                break;
+                            //Ingresar Lexema
+                            case 1:
+                                Practica1_201700988.listER.get(posER(idActual)).insertCadena(actualToken.getValor());
+                                break;
+                        }
+                    } else if (actualToken.getTipoString().equals("Punto y Coma")) {
+                        state = 0;
+                    }
+                    break;
+            }
+
+        }
+    }
+
+    private int posER(String id) {
+        int pos = 0;
+        Iterator<classER> iteradorER = Practica1_201700988.listER.iterator();
+        while (iteradorER.hasNext()) {
+            classER actualER = iteradorER.next();
+            if (actualER.getId().equals(id)) {
+                break;
+            }
+            pos++;
+        }
+        return pos;
+    }
+
+    private boolean existeER(String id) {
+        Iterator<classER> iteradorER = Practica1_201700988.listER.iterator();
+        while (iteradorER.hasNext()) {
+            classER actualER = iteradorER.next();
+            if (actualER.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int posConj(String id) {
+        int pos = 0;
+        Iterator<classConj> iteradorConj = Practica1_201700988.listConj.iterator();
+        while (iteradorConj.hasNext()) {
+            classConj actualConj = iteradorConj.next();
+            if (actualConj.getId().equals(id)) {
+                break;
+            }
+            pos++;
+        }
+        return pos;
+    }
+
+    private boolean existeConj(String id) {
+        Iterator<classConj> iteradorConj = Practica1_201700988.listConj.iterator();
+        while (iteradorConj.hasNext()) {
+            classConj actualConj = iteradorConj.next();
+            if (actualConj.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}

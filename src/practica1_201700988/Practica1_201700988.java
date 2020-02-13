@@ -4,6 +4,7 @@ import analizador.analisisLexico;
 import esctructuras.arbol;
 import esctructuras.classConj;
 import esctructuras.classER;
+import funciones.cargaDatos;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class Practica1_201700988 {
 
     //Instancia de clases
     public static analisisLexico analizador = new analisisLexico();
+    public static cargaDatos upDate = new cargaDatos();
 
     //Instancia de datos
     public static int conteoAnalisis = 0;
@@ -25,20 +27,18 @@ public class Practica1_201700988 {
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
         ventana.setTitle("RegexJava 0.1");
-
-        tree.inicializarArbol();
-
-        tree.insert(".", "operacion");
-        tree.insert("/", "operacion");
-        tree.insert(".", "operacion");
-        tree.insert("H", "valor");
-        tree.insert("D", "valor");
-        tree.insert("L", "valor");
-        tree.insert("S", "valor");
         
-
+        tree.inicializarArbol();
+        tree.insert(".", "operacion");
+        tree.insert("letra", "valor");
+        tree.insert("*","cerradura");
+        tree.insert("/", "operacion");
+        tree.insert("_", "valor");
+        tree.insert("/", "operacion");
+        tree.insert("letra", "valor");
+        tree.insert("digito", "valor");
         tree.graficarArbol();
-
+        
     }
 
 }

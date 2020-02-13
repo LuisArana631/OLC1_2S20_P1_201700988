@@ -72,7 +72,7 @@ public class token {
             case LLAVE_DER:
                 return "Llave Derecha";
             case CAMBIO_SEGMENTO:
-                return "Cambio Segmento";
+                return "Cambio de Segmento";
             case CONCATENACION:
                 return "Concatenacion";
             case DISYUNCION:

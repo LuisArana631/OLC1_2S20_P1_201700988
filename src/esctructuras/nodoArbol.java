@@ -5,8 +5,8 @@ public class nodoArbol {
     private boolean anulable;
     private String tipo;
     private int id;
-    private int primeros;
-    private int ultimos;
+    private String primeros;
+    private String ultimos;
     private String valor;
     private int numNodo;
     private nodoArbol left;
@@ -68,19 +68,19 @@ public class nodoArbol {
         this.id = id;
     }
 
-    public int getPrimeros() {
+    public String getPrimeros() {
         return primeros;
     }
 
-    public void setPrimeros(int primeros) {
+    public void setPrimeros(String primeros) {
         this.primeros = primeros;
     }
 
-    public int getUltimos() {
+    public String getUltimos() {
         return ultimos;
     }
 
-    public void setUltimos(int ultimos) {
+    public void setUltimos(String ultimos) {
         this.ultimos = ultimos;
     }
 

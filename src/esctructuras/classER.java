@@ -12,6 +12,7 @@ public class classER {
         this.id = id;
         this.arbolExpresion = new arbol();
         this.cadenas = new ArrayList<>();
+        this.arbolExpresion.inicializarArbol();
     }
 
     public String getId() {
@@ -34,8 +35,16 @@ public class classER {
         return cadenas;
     }
 
+    public void insertCadena(String cadena) {
+        this.cadenas.add(new classCadena(cadena));
+    }
+
     public void setCadenas(ArrayList<classCadena> cadenas) {
         this.cadenas = cadenas;
+    }
+
+    public void insertNodo(String tipo, String valor) {
+        this.arbolExpresion.insert(valor, tipo);
     }
 
 }

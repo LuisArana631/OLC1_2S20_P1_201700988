@@ -1,10 +1,8 @@
 package analizador;
 
 import analizador.token.tipo;
-import esctructuras.classConj;
 import java.util.ArrayList;
 import javax.swing.JTextArea;
-import practica1_201700988.Practica1_201700988;
 
 public class analisisLexico {
 
@@ -347,45 +345,36 @@ public class analisisLexico {
         consola.setText(consola.getText() + "-------------------Fin de Reporte------------------\n");
     }
 
-    //Cargar datos a las estructuras
-    public void cargarDatos() {
-        int state = 0;
-        int count = 0;
-
-        for (token tokenItem : salida) {
-            switch (state) {
-                case 0:
-                    if (tokenItem.getTipo() == tipo.CONJ) {
-                        state = 1;
-                    } else if (tokenItem.getTipo() == tipo.Identificador) {
-                        state = 3;
-                    }
-                    break;
-                case 1:
-                    if (tokenItem.getTipo() == tipo.Identificador) {
-                        Practica1_201700988.listConj.add(new classConj(tokenItem.getValor()));                        
-                    } else if (tokenItem.getTipo() == tipo.Simbolo || tokenItem.getTipo() == tipo.Caracter || tokenItem.getTipo() == tipo.Numero) {
-                        Practica1_201700988.listConj.get(count).addItem(tokenItem.getValor());                        
-                        state = 2;
-                    }
-                    break;
-                case 2:
-                    if (null != tokenItem.getTipo()) switch (tokenItem.getTipo()) {
-                    case COMA:
-                            
-                        break;
-                    case Macro:
-                        
-                        break;
-                    case PUNTO_COMA:
-                        
-                        break;
-                    default:
-                        
-                        break;
-                }
-
-            }
-        }
+    public ArrayList<token> getSalida() {
+        return salida;
     }
+
+    public void setSalida(ArrayList<token> salida) {
+        this.salida = salida;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getAuxiliarLexico() {
+        return auxiliarLexico;
+    }
+
+    public void setAuxiliarLexico(String auxiliarLexico) {
+        this.auxiliarLexico = auxiliarLexico;
+    }
+
+    public int getLinea() {
+        return linea;
+    }
+
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }   
+    
 }
