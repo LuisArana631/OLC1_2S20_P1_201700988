@@ -16,7 +16,7 @@ public class Practica1_201700988 {
     public static int conteoAnalisis = 0;
     public static ArrayList<classER> listER = new ArrayList<>();
     public static ArrayList<classConj> listConj = new ArrayList<>();
-    
+
     public static arbol tree = new arbol();
 
     public static void main(String[] args) throws IOException {
@@ -25,13 +25,18 @@ public class Practica1_201700988 {
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
         ventana.setTitle("RegexJava 0.1");
-        
-        tree.inicializarArbol();                
-        
-        tree.insert("?", "cerradura");
+
+        tree.inicializarArbol();
+
+        tree.insert(".", "operacion");
+        tree.insert("/", "operacion");
+        tree.insert(".", "operacion");
         tree.insert("H", "valor");
+        tree.insert("D", "valor");
+        tree.insert("L", "valor");
+        tree.insert("S", "valor");
         
-        
+
         tree.graficarArbol();
 
     }

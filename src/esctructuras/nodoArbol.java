@@ -3,19 +3,37 @@ package esctructuras;
 public class nodoArbol {
 
     private boolean anulable;
-    private String tipo;    
+    private String tipo;
     private int id;
     private int primeros;
     private int ultimos;
     private String valor;
+    private int numNodo;
     private nodoArbol left;
     private nodoArbol right;
 
-    public nodoArbol(String valor, String tipo) {
+    public nodoArbol(String valor, String tipo, int numNodo) {
         this.valor = valor;
         this.tipo = tipo;
         this.left = null;
         this.right = null;
+        this.numNodo = numNodo;
+    }
+
+    public boolean isAnulable() {
+        return anulable;
+    }
+
+    public void setAnulable(boolean anulable) {
+        this.anulable = anulable;
+    }
+
+    public int getNumNodo() {
+        return numNodo;
+    }
+
+    public void setNumNodo(int numNodo) {
+        this.numNodo = numNodo;
     }
 
     public String getTipo() {
@@ -40,14 +58,6 @@ public class nodoArbol {
 
     public void setRight(nodoArbol right) {
         this.right = right;
-    }
-
-    public Boolean getAnulable() {
-        return anulable;
-    }
-
-    public void setAnulable(Boolean anulable) {
-        this.anulable = anulable;
     }
 
     public int getId() {

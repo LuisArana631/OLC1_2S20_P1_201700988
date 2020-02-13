@@ -12,30 +12,27 @@ public class arbol {
 
     private nodoArbol raiz;
     private int hojas = 1;
-    private int conteo = 0;
+    private int conteoNodos = 0;
 
     public arbol() {
         this.raiz = null;
     }
 
     public nodoArbol getRaiz() {
-        return raiz;        
-    }
-    
-    public void inicializarArbol(){
-        insert(".", "operacion");
-        insertRight("#", "aceptacion", raiz);
+        return raiz;
     }
 
-    private void setRaiz(nodoArbol raiz) {
-        this.raiz = raiz;        
+    public void inicializarArbol() {
+        insert(".", "operacion");
+        insertRight("#", "aceptacion", raiz);
     }
 
     public void insert(String valor, String tipo) {
         if (raiz != null) {
             insertNodo(valor, tipo, raiz);
         } else {
-            this.raiz = new nodoArbol(valor, tipo);
+            this.raiz = new nodoArbol(valor, tipo, conteoNodos);
+            conteoNodos++;
         }
     }
 
@@ -62,13 +59,56 @@ public class arbol {
     private void insertInOperation(String tipo, String valor, nodoArbol nodo) {
         //Caso 1
         if (nodo.getLeft() != null) {
-            if (nodo.getLeft().getTipo().equals("operacion")) {
-                //Caso 2
-                if (libreOperacion(nodo.getLeft())) {
-                    insertNodo(valor, tipo, nodo.getLeft());
-                } else //Caso 3
-                {
+            switch (nodo.getLeft().getTipo()) {
+                //Caso 4
+                case "operacion":
+                    //Caso 2
+                    if (libreOperacion(nodo.getLeft())) {
+                        insertNodo(valor, tipo, nodo.getLeft());
+                    } else //Caso 3
+                    {
+                        if (nodo.getRight() == null) {
+                            insertRight(valor, tipo, nodo);
+                        } else if (nodo.getRight().getTipo().equals("operacion")) {
+                            if (libreOperacion(nodo.getRight())) {
+                                insertNodo(valor, tipo, nodo.getRight());
+                            } else {
+                                System.out.println("Aqui si no hay vuelta atras");
+                            }
+                        } else if (nodo.getRight().getTipo().equals("cerradura")) {
+                            if (libreCerradura(nodo.getRight())) {
+                                insertNodo(valor, tipo, nodo.getRight());
+                            } else {
+                                System.out.println("A ver si aprendes");
+                            }
+                        }
+                    }
+                    break;
+                //Caso 5
+                case "valor":
                     if (nodo.getRight() == null) {
+                        insertRight(valor, tipo, nodo);
+                    } else {
+                        System.out.println("Insertando: " + valor + " tipo: " + tipo);
+
+                        System.out.println("No podes llegar acá es casi imposible a menos que este mal esa mierda");
+                    }
+                    break;
+                case "cerradura":
+                    if (libreCerradura(nodo.getLeft())) {
+                        insertNodo(valor, tipo, nodo.getLeft());
+                    } //Caso 6
+                    else if (nodo.getLeft().getLeft().getTipo().equals("operacion")) {
+                        if (libreOperacion(nodo.getLeft().getLeft())) {
+                            insertNodo(valor, tipo, nodo.getLeft());
+                        } else {
+                            if (nodo.getRight() != null) {
+                                insertNodo(valor, tipo, nodo.getRight());
+                            } else {
+                                insertRight(valor, tipo, nodo);
+                            }
+                        }
+                    } else if (nodo.getRight() == null) {
                         insertRight(valor, tipo, nodo);
                     } else if (nodo.getRight().getTipo().equals("operacion")) {
                         if (libreOperacion(nodo.getRight())) {
@@ -83,34 +123,9 @@ public class arbol {
                             System.out.println("A ver si aprendes");
                         }
                     }
-                }
-            } //Caso 4
-            else if (nodo.getLeft().getTipo().equals("valor")) {
-                if (nodo.getRight() == null) {
-                    insertRight(valor, tipo, nodo);
-                } else {
-                    System.out.println("No podes llegar acá es casi imposible a menos que este mal esa mierda");
-                }
-            } //Caso 5
-            else if (nodo.getLeft().getTipo().equals("cerradura")) {
-                if (libreCerradura(nodo.getLeft())) {
-                    insertNodo(valor, tipo, nodo.getLeft());
-                } //Caso 6
-                else if (nodo.getRight() == null) {
-                    insertRight(valor, tipo, nodo);
-                } else if (nodo.getRight().getTipo().equals("operacion")) {
-                    if (libreOperacion(nodo.getRight())) {
-                        insertNodo(valor, tipo, nodo.getRight());
-                    } else {
-                        System.out.println("Aqui si no hay vuelta atras");
-                    }
-                } else if (nodo.getRight().getTipo().equals("cerradura")) {
-                    if (libreCerradura(nodo.getRight())) {
-                        insertNodo(valor, tipo, nodo.getRight());
-                    } else {
-                        System.out.println("A ver si aprendes");
-                    }
-                }
+                    break;
+                default:
+                    break;
             }
         } else {
             insertLeft(valor, tipo, nodo);
@@ -119,26 +134,48 @@ public class arbol {
 
     private void insertInCerradura(String tipo, String valor, nodoArbol nodo) {
         if (nodo.getLeft() != null) {
-            System.out.println("No puedes hacer nada jaja, vales verga cerote.");
+            if (nodo.getLeft().getTipo().equals("operacion")) {
+                insertNodo(valor, tipo, nodo.getLeft());
+            }
         } else {
             insertLeft(valor, tipo, nodo);
         }
     }
 
     private Boolean libreOperacion(nodoArbol nodo) {
-        return nodo.getLeft() == null || nodo.getRight() == null;
+        if (nodo.getLeft() == null || nodo.getRight() == null) {
+            return true;
+        } else if (nodo.getLeft().getTipo().equals("cerradura") && libreCerradura(nodo.getLeft())) {
+            return true;
+        } else if (nodo.getRight().getTipo().equals("cerradura") && libreCerradura(nodo.getRight())) {
+            return true;
+        } else if (nodo.getLeft().getTipo().equals("operacion") && libreOperacion(nodo.getLeft())) {
+            return true;
+        } else if (nodo.getRight().getTipo().equals("operacion") && libreOperacion(nodo.getRight())) {
+            return true;
+        }
+        return false;
     }
 
     private boolean libreCerradura(nodoArbol nodo) {
-        return nodo.getLeft() == null;
+        if (nodo.getLeft() == null) {
+            return true;
+        } else if (nodo.getLeft().getTipo().equals("cerradura") && libreCerradura(nodo.getLeft())) {
+            return true;
+        } else if (nodo.getLeft().getTipo().equals("operacion") && libreCerradura(nodo.getLeft())) {
+            return true;
+        }
+        return false;
     }
 
     private void insertLeft(String valor, String tipo, nodoArbol nodo) {
-        nodo.setLeft(new nodoArbol(valor, tipo));
+        nodo.setLeft(new nodoArbol(valor, tipo, conteoNodos));
+        conteoNodos++;
     }
 
     private void insertRight(String valor, String tipo, nodoArbol nodo) {
-        nodo.setRight(new nodoArbol(valor, tipo));
+        nodo.setRight(new nodoArbol(valor, tipo, conteoNodos));
+        conteoNodos++;
     }
 
     private boolean arbolVacio() {
@@ -156,7 +193,7 @@ public class arbol {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -168,7 +205,7 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
+            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de archivos\";");
                 write.println("}");
                 write.close();
@@ -195,17 +232,17 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
-                write.println("\"node" + nodo.getValor() + "\"[label = \"<f0> |<f1> " + nodo.getValor() + "|<f2> \"];");
+            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
+                write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0> |<f1> " + nodo.getValor() + "|<f2> \"];");
 
                 //Validar hijo izquierdo
                 if (nodo.getLeft() != null) {
-                    write.println("\"node" + nodo.getValor() + "\":f0 -> \"node" + nodo.getLeft().getValor() + "\":f1;");
+                    write.println("\"node" + nodo.getNumNodo() + "\":f0 -> \"node" + nodo.getLeft().getNumNodo() + "\":f1;");
                 }
 
                 //Validad hijo derecho
                 if (nodo.getRight() != null) {
-                    write.println("\"node" + nodo.getValor() + "\":f2 -> \"node" + nodo.getRight().getValor() + "\":f1;");
+                    write.println("\"node" + nodo.getNumNodo() + "\":f2 -> \"node" + nodo.getRight().getNumNodo() + "\":f1;");
                 }
 
                 write.close();
