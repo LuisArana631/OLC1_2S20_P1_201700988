@@ -2,8 +2,8 @@ package esctructuras;
 
 public class nodoArbol {
 
-    private Boolean anulable;
-    private String tipo;
+    private boolean anulable;
+    private String tipo;    
     private int id;
     private int primeros;
     private int ultimos;
