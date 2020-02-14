@@ -157,12 +157,12 @@ public class arbol {
 
                 //Validar hijo izquierdo
                 if (nodo.getLeft() != null) {
-                    write.println("\"node" + nodo.getNumNodo() + "\":f0 -> \"node" + nodo.getLeft().getNumNodo() + "\":f1;");
+                    write.println("\"node" + nodo.getNumNodo() + "\":f0 -> \"node" + nodo.getLeft().getNumNodo() + "\";");
                 }
 
                 //Validad hijo derecho
                 if (nodo.getRight() != null) {
-                    write.println("\"node" + nodo.getNumNodo() + "\":f2 -> \"node" + nodo.getRight().getNumNodo() + "\":f1;");
+                    write.println("\"node" + nodo.getNumNodo() + "\":f2 -> \"node" + nodo.getRight().getNumNodo() + "\";");
                 }
 
                 write.close();

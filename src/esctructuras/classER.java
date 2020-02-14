@@ -1,6 +1,7 @@
 package esctructuras;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class classER {
 
@@ -45,6 +46,14 @@ public class classER {
 
     public void insertNodo(String tipo, String valor) {
         this.arbolExpresion.insert(valor, tipo);
+    }
+    
+    public void mostrarLexemas() {
+        Iterator<classCadena> iteradorLexema = cadenas.iterator();
+        while (iteradorLexema.hasNext()) {
+            classCadena actualLexema = iteradorLexema.next();
+            System.out.println("Lexema ingresado: " + actualLexema.getCadena());
+        }
     }
 
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -233,6 +235,14 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
         Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
+        Practica1_201700988.mostrarConj();
+        Practica1_201700988.mostrarER();       
+        Practica1_201700988.mostrarLexemas();
+        try {
+            Practica1_201700988.listER.get(0).getArbolExpresion().graficarArbol();
+        } catch (IOException ex) {
+            Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void saveAsFile() {

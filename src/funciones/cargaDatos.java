@@ -5,6 +5,7 @@ import esctructuras.classConj;
 import esctructuras.classER;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JTextArea;
 import practica1_201700988.Practica1_201700988;
 
 public class cargaDatos {
@@ -19,7 +20,7 @@ public class cargaDatos {
         Iterator<token> iteradorTokens = listToken.iterator();
         while (iteradorTokens.hasNext()) {
             token actualToken = iteradorTokens.next();
-            
+
             switch (state) {
                 //Decidir que insertar
                 case 0:
@@ -129,20 +130,20 @@ public class cargaDatos {
                         Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
                     } else if (actualToken.getTipoString().equals("Disyuncion")) {
                         Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Conjuncion")) {
+                    } else if (actualToken.getTipoString().equals("Concatenacion")) {
                         Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
                     } else if (actualToken.getTipoString().equals("Cadena")) {
                         switch (stateER) {
                             //Ingresar ER
                             case 0:
-                                Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor());
+                                Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
                                 break;
                             //Ingresar Lexema
                             case 1:
-                                Practica1_201700988.listER.get(posER(idActual)).insertCadena(actualToken.getValor());
+                                Practica1_201700988.listER.get(posER(idActual)).insertCadena(actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
                                 break;
                         }
-                    } else if (actualToken.getTipoString().equals("Punto y Coma")) {
+                    } else if (actualToken.getTipoString().equals("Punto y coma")) {
                         state = 0;
                     }
                     break;
@@ -162,6 +163,10 @@ public class cargaDatos {
             pos++;
         }
         return pos;
+    }
+
+    public void escribirConsola(JTextArea consola, String text) {
+        consola.setText(consola.getText() + text);
     }
 
     private boolean existeER(String id) {
