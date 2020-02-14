@@ -80,7 +80,7 @@ public class cargaDatos {
                                         Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
                                     }
                                 } else if (actualToken.getTipoString().equals("Caracter")) {
-                                    if (Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().size() != 0) {
+                                    if (!Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().isEmpty()) {
                                         char inicio = Practica1_201700988.listConj.get(posConj(idActual)).getStart();
                                         char fin = actualToken.getValor().charAt(0);
 
@@ -93,7 +93,7 @@ public class cargaDatos {
                                         Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
                                     }
                                 } else if (actualToken.getTipoString().equals("Numero")) {
-                                    if (Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().size() != 0) {
+                                    if (!Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().isEmpty()) {
                                         int inicio = Integer.parseInt(Practica1_201700988.listConj.get(posConj(idActual)).getStringStart());
                                         int fin = Integer.parseInt(actualToken.getValor());
 
@@ -107,46 +107,67 @@ public class cargaDatos {
                                 break;
                             //Cuando es una coma el delimitador
                             case 1:
-                                if (actualToken.getTipoString().equals("Simbolo")) {
-                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
-                                } else if (actualToken.getTipoString().equals("Caracter")) {
-                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
-                                } else if (actualToken.getTipoString().equals("Numero")) {
-                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                switch (actualToken.getTipoString()) {
+                                    case "Simbolo":
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                        break;
+                                    case "Caracter":
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                        break;
+                                    case "Numero":
+                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
+                                        break;
+                                    default:
+                                        break;
                                 }
                                 break;
+
                         }
                     }
                     break;
                 //Insertar er o lexema
                 case 2:
-                    if (actualToken.getTipoString().equals("Identificador")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Cerradura *")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Cerradura +")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Cerradura ?")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Disyuncion")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Concatenacion")) {
-                        Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
-                    } else if (actualToken.getTipoString().equals("Cadena")) {
-                        switch (stateER) {
-                            //Ingresar ER
-                            case 0:
-                                Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
-                                break;
-                            //Ingresar Lexema
-                            case 1:
-                                Practica1_201700988.listER.get(posER(idActual)).insertCadena(actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
-                                break;
-                        }
-                    } else if (actualToken.getTipoString().equals("Punto y coma")) {
-                        state = 0;
+                    switch (actualToken.getTipoString()) {
+                        case "Identificador":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor());
+                            break;
+                        case "Cerradura *":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                            break;
+                        case "Cerradura +":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                            break;
+                        case "Cerradura ?":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("cerradura", actualToken.getValor());
+                            break;
+                        case "Disyuncion":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
+                            break;
+                        case "Concatenacion":
+                            Practica1_201700988.listER.get(posER(idActual)).insertNodo("operacion", actualToken.getValor());
+                            break;
+                        case "Cadena":
+                            switch (stateER) {
+                                //Ingresar ER
+                                case 0:
+                                    Practica1_201700988.listER.get(posER(idActual)).insertNodo("valor", actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
+                                    break;
+                                //Ingresar Lexema
+                                case 1:
+                                    Practica1_201700988.listER.get(posER(idActual)).insertCadena(actualToken.getValor().substring(1, actualToken.getValor().length() - 1));
+                                    break;
+                            }
+                            break;
+                        case "Punto y coma":
+                            state = 0;
+                            Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().idAceptacion();
+                            Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().calculos();
+                            break;
+                        default:
+                            break;
                     }
                     break;
+
             }
 
         }

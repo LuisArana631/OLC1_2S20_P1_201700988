@@ -94,7 +94,12 @@ public class arbol {
     }
 
     private void insertRight(String valor, String tipo, nodoArbol nodo) {
-        nodo.setRight(new nodoArbol(valor, tipo, conteoNodos));
+        nodoArbol nodoInsert = new nodoArbol(valor, tipo, conteoNodos);
+        if (tipo.equals("valor")) {
+            nodoInsert.setId(hojas);
+            hojas++;
+        }
+        nodo.setRight(nodoInsert);
         conteoNodos++;
     }
 
@@ -113,7 +118,7 @@ public class arbol {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -125,8 +130,8 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
-                write.println("label= \"Reporte de archivos\";");
+            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
+                write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
             }
@@ -143,7 +148,7 @@ public class arbol {
             pbuild.redirectErrorStream(true);
             pbuild.start();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al crear el reporte de bitácora." + e, "Error con la bitácora.", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al crear el reporte del árbol." + e, "Error con el árbol.", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -152,8 +157,8 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
-                write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0> |<f1> " + nodo.getValor() + "|<f2> \"];");
+            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
+                write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
 
                 //Validar hijo izquierdo
                 if (nodo.getLeft() != null) {
@@ -170,6 +175,133 @@ public class arbol {
 
             crearArbol(nodo.getRight(), pathDot);
         }
+    }
+
+    private String anulable(nodoArbol nodo) {
+        if (nodo.getAnulable()) {
+            return "Anulable";
+        } else {
+            return "No Anulable";
+        }
+    }
+
+    public void calculos() {
+        setAnulables(this.raiz);
+        setPrimeros(this.raiz);
+        setUltimos(this.raiz);
+    }
+
+    private void setUltimos(nodoArbol nodo) {
+        if (nodo.getLeft() != null) {
+            setUltimos(nodo.getLeft());
+        }
+
+        if (nodo.getRight() != null) {
+            setUltimos(nodo.getRight());
+        }
+
+        switch (nodo.getTipo()) {
+            case "valor":
+                nodo.setUltimos(Integer.toString(nodo.getId()));
+                break;
+            case "operacion":
+                if (nodo.getValor().equals("|")) {
+                    String ultimos = nodo.getLeft().getUltimos() + "," + nodo.getRight().getUltimos();
+                    nodo.setUltimos(ultimos);
+                } else {
+                    if (nodo.getRight().getAnulable() == true) {
+                        String ultimos = nodo.getLeft().getUltimos() + "," + nodo.getRight().getUltimos();
+                        nodo.setUltimos(ultimos);
+                    } else {
+                        nodo.setUltimos(nodo.getRight().getUltimos());
+                    }
+                }
+                break;
+            case "cerradura":
+                nodo.setUltimos(nodo.getLeft().getUltimos());
+                break;
+            case "aceptacion":
+                nodo.setUltimos(Integer.toString(nodo.getId()));
+                break;
+        }
+
+    }
+
+    private void setPrimeros(nodoArbol nodo) {
+        if (nodo.getLeft() != null) {
+            setPrimeros(nodo.getLeft());
+        }
+
+        if (nodo.getRight() != null) {
+            setPrimeros(nodo.getRight());
+        }
+
+        switch (nodo.getTipo()) {
+            case "valor":
+                nodo.setPrimeros(Integer.toString(nodo.getId()));
+                break;
+            case "operacion":
+                if (nodo.getValor().equals("|")) {
+                    String primeros = nodo.getLeft().getPrimeros() + "," + nodo.getRight().getPrimeros();
+                    nodo.setPrimeros(primeros);
+                } else {
+                    if (nodo.getLeft().getAnulable() == true) {
+                        String primeros = nodo.getLeft().getPrimeros() + "," + nodo.getRight().getPrimeros();
+                        nodo.setPrimeros(primeros);
+                    } else {
+                        nodo.setPrimeros(nodo.getLeft().getPrimeros());
+                    }
+                }
+                break;
+            case "cerradura":
+                nodo.setPrimeros(nodo.getLeft().getPrimeros());
+                break;
+            case "aceptacion":
+                nodo.setPrimeros(Integer.toString(nodo.getId()));
+                break;
+        }
+
+    }
+
+    private void setAnulables(nodoArbol nodo) {
+        if (nodo.getLeft() != null) {
+            setAnulables(nodo.getLeft());
+        }
+
+        if (nodo.getRight() != null) {
+            setAnulables(nodo.getRight());
+        }
+
+        switch (nodo.getTipo()) {
+            case "valor":
+                nodo.setAnulable(false);
+                break;
+            case "operacion":
+                if (nodo.getValor().equals("|")) {
+                    if (nodo.getLeft().getAnulable() == true || nodo.getRight().getAnulable() == true) {
+                        nodo.setAnulable(true);
+                    } else {
+                        nodo.setAnulable(false);
+                    }
+                } else {
+                    if (nodo.getLeft().getAnulable() == true && nodo.getRight().getAnulable() == true) {
+                        nodo.setAnulable(true);
+                    } else {
+                        nodo.setAnulable(false);
+                    }
+                }
+                break;
+            case "cerradura":
+                if (nodo.getValor().equals("+")) {
+                    nodo.setAnulable(false);
+                } else {
+                    nodo.setAnulable(true);
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     //operacion | .

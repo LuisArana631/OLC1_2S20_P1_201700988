@@ -20,7 +20,7 @@ public class nodoArbol {
         this.numNodo = numNodo;
     }
 
-    public boolean isAnulable() {
+    public boolean getAnulable() {
         return anulable;
     }
 
