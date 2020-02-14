@@ -26,19 +26,7 @@ public class Practica1_201700988 {
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
-        ventana.setTitle("RegexJava 0.1");
-        
-        tree.inicializarArbol();
-        tree.insert(".", "operacion");
-        tree.insert("letra", "valor");
-        tree.insert("*","cerradura");
-        tree.insert("/", "operacion");
-        tree.insert("_", "valor");
-        tree.insert("/", "operacion");
-        tree.insert("letra", "valor");
-        tree.insert("digito", "valor");
-        tree.graficarArbol();
-        
+        ventana.setTitle("RegexJava 0.1");    
     }
 
 }
