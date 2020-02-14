@@ -162,6 +162,7 @@ public class cargaDatos {
                             state = 0;
                             Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().idAceptacion();
                             Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().calculos();
+                            Practica1_201700988.listER.get(posER(idActual)).setTablaSiguientes(Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().crearTablaSiguientes());
                             break;
                         default:
                             break;

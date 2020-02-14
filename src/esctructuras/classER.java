@@ -8,12 +8,35 @@ public class classER {
     private String id;
     private arbol arbolExpresion;
     private ArrayList<classCadena> cadenas;
+    private ArrayList<classSiguientes> tablaSiguientes;
 
     public classER(String id) {
         this.id = id;
         this.arbolExpresion = new arbol();
         this.cadenas = new ArrayList<>();
+        this.tablaSiguientes = new ArrayList<>();
         this.arbolExpresion.inicializarArbol();
+    }
+
+    public void crearTablaSiguientes() {
+        this.tablaSiguientes = this.arbolExpresion.crearTablaSiguientes();
+    }
+
+    public void mostrarTablaSiguientes() {
+        Iterator<classSiguientes> iteradorSiguientes = tablaSiguientes.iterator();
+        System.out.println("--Valor--|--ID--|--Siguientes-- ");
+        while (iteradorSiguientes.hasNext()) {
+            classSiguientes actualSiguiente = iteradorSiguientes.next();
+            System.out.println(actualSiguiente.getValor() + " | " + actualSiguiente.getId() + " | " + actualSiguiente.getSiguientes());
+        }
+    }
+
+    public ArrayList<classSiguientes> getTablaSiguientes() {
+        return tablaSiguientes;
+    }
+
+    public void setTablaSiguientes(ArrayList<classSiguientes> tablaSiguientes) {
+        this.tablaSiguientes = tablaSiguientes;
     }
 
     public String getId() {
@@ -47,7 +70,7 @@ public class classER {
     public void insertNodo(String tipo, String valor) {
         this.arbolExpresion.insert(valor, tipo);
     }
-    
+
     public void mostrarLexemas() {
         Iterator<classCadena> iteradorLexema = cadenas.iterator();
         while (iteradorLexema.hasNext()) {

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class arbol {
@@ -118,7 +119,7 @@ public class arbol {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -130,7 +131,7 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
+            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
@@ -157,8 +158,12 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
-                write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
+            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
+                if (nodo.getValor().length() == 1) {
+                    write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
+                } else {
+                    write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | " + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
+                }
 
                 //Validar hijo izquierdo
                 if (nodo.getLeft() != null) {
@@ -172,7 +177,6 @@ public class arbol {
 
                 write.close();
             }
-
             crearArbol(nodo.getRight(), pathDot);
         }
     }
@@ -208,13 +212,11 @@ public class arbol {
                 if (nodo.getValor().equals("|")) {
                     String ultimos = nodo.getLeft().getUltimos() + "," + nodo.getRight().getUltimos();
                     nodo.setUltimos(ultimos);
+                } else if (nodo.getRight().getAnulable() == true) {
+                    String ultimos = nodo.getLeft().getUltimos() + "," + nodo.getRight().getUltimos();
+                    nodo.setUltimos(ultimos);
                 } else {
-                    if (nodo.getRight().getAnulable() == true) {
-                        String ultimos = nodo.getLeft().getUltimos() + "," + nodo.getRight().getUltimos();
-                        nodo.setUltimos(ultimos);
-                    } else {
-                        nodo.setUltimos(nodo.getRight().getUltimos());
-                    }
+                    nodo.setUltimos(nodo.getRight().getUltimos());
                 }
                 break;
             case "cerradura":
@@ -244,13 +246,11 @@ public class arbol {
                 if (nodo.getValor().equals("|")) {
                     String primeros = nodo.getLeft().getPrimeros() + "," + nodo.getRight().getPrimeros();
                     nodo.setPrimeros(primeros);
+                } else if (nodo.getLeft().getAnulable() == true) {
+                    String primeros = nodo.getLeft().getPrimeros() + "," + nodo.getRight().getPrimeros();
+                    nodo.setPrimeros(primeros);
                 } else {
-                    if (nodo.getLeft().getAnulable() == true) {
-                        String primeros = nodo.getLeft().getPrimeros() + "," + nodo.getRight().getPrimeros();
-                        nodo.setPrimeros(primeros);
-                    } else {
-                        nodo.setPrimeros(nodo.getLeft().getPrimeros());
-                    }
+                    nodo.setPrimeros(nodo.getLeft().getPrimeros());
                 }
                 break;
             case "cerradura":
@@ -283,12 +283,10 @@ public class arbol {
                     } else {
                         nodo.setAnulable(false);
                     }
+                } else if (nodo.getLeft().getAnulable() == true && nodo.getRight().getAnulable() == true) {
+                    nodo.setAnulable(true);
                 } else {
-                    if (nodo.getLeft().getAnulable() == true && nodo.getRight().getAnulable() == true) {
-                        nodo.setAnulable(true);
-                    } else {
-                        nodo.setAnulable(false);
-                    }
+                    nodo.setAnulable(false);
                 }
                 break;
             case "cerradura":
@@ -302,6 +300,45 @@ public class arbol {
                 break;
         }
 
+    }
+
+    public ArrayList<classSiguientes> crearTablaSiguientes() {
+        ArrayList<classSiguientes> tablaSiguientes = new ArrayList<>();
+
+        ingresarHojas(tablaSiguientes, this.raiz);
+        insertarSiguientes(tablaSiguientes, this.raiz);
+
+        return tablaSiguientes;
+    }
+
+    private void insertarSiguientes(ArrayList<classSiguientes> tablaSiguientes, nodoArbol nodo) {
+
+        if (nodo.getLeft() != null) {
+            ingresarHojas(tablaSiguientes, nodo.getLeft());
+        }
+
+        if (nodo.getRight() != null) {
+            ingresarHojas(tablaSiguientes, nodo.getRight());
+        }
+
+        if (nodo.getTipo().equals("*")) {
+
+        }
+    }
+
+    private void ingresarHojas(ArrayList<classSiguientes> tablaSiguientes, nodoArbol nodo) {
+
+        if (nodo.getTipo().equals("valor") || nodo.getTipo().equals("aceptacion")) {
+            tablaSiguientes.add(new classSiguientes(nodo.getValor(), nodo.getId()));
+        }
+
+        if (nodo.getLeft() != null) {
+            ingresarHojas(tablaSiguientes, nodo.getLeft());
+        }
+
+        if (nodo.getRight() != null) {
+            ingresarHojas(tablaSiguientes, nodo.getRight());
+        }
     }
 
     //operacion | .
