@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 public class arbol {
@@ -119,7 +120,7 @@ public class arbol {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -131,7 +132,7 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
+            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
@@ -158,7 +159,7 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
+            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
                 if (nodo.getValor().length() == 1) {
                     write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
                 } else {
@@ -313,17 +314,50 @@ public class arbol {
 
     private void insertarSiguientes(ArrayList<classSiguientes> tablaSiguientes, nodoArbol nodo) {
 
+        if (nodo.getTipo().equals("operacion") || nodo.getTipo().equals("cerradura")) {
+            switch (nodo.getValor()) {
+                case "*":
+                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    break;
+                case ".":
+                    insertNext(tablaSiguientes, nodo.getRight().getPrimeros(), nodo.getLeft().getUltimos());
+                    break;
+                case "+":
+                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    break;
+                default:
+                    //Ignorar
+                    break;
+            }
+        }
+
         if (nodo.getLeft() != null) {
-            ingresarHojas(tablaSiguientes, nodo.getLeft());
+            insertarSiguientes(tablaSiguientes, nodo.getLeft());
         }
 
         if (nodo.getRight() != null) {
-            ingresarHojas(tablaSiguientes, nodo.getRight());
+            insertarSiguientes(tablaSiguientes, nodo.getRight());
         }
+    }
 
-        if (nodo.getTipo().equals("*")) {
-
+    private void insertNext(ArrayList<classSiguientes> tablaSiguientes, String siguientes, String valores) {
+        String[] numerosValores = valores.split(",");
+        for (String numero : numerosValores) {
+            tablaSiguientes.get(posValor(tablaSiguientes, numero)).setSiguientes(siguientes);
         }
+    }
+
+    private int posValor(ArrayList<classSiguientes> tablaSiguientes, String numero) {
+        int pos = 0;
+        Iterator<classSiguientes> iteradorSiguientes = tablaSiguientes.iterator();
+        while (iteradorSiguientes.hasNext()) {
+            classSiguientes actualSiguiente = iteradorSiguientes.next();
+            if (actualSiguiente.getId() == Integer.parseInt(numero)) {
+                break;
+            }
+            pos++;
+        }
+        return pos;
     }
 
     private void ingresarHojas(ArrayList<classSiguientes> tablaSiguientes, nodoArbol nodo) {

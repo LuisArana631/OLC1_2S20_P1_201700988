@@ -22,15 +22,6 @@ public class classER {
         this.tablaSiguientes = this.arbolExpresion.crearTablaSiguientes();
     }
 
-    public void mostrarTablaSiguientes() {
-        Iterator<classSiguientes> iteradorSiguientes = tablaSiguientes.iterator();
-        System.out.println("--Valor--|--ID--|--Siguientes-- ");
-        while (iteradorSiguientes.hasNext()) {
-            classSiguientes actualSiguiente = iteradorSiguientes.next();
-            System.out.println(actualSiguiente.getValor() + " | " + actualSiguiente.getId() + " | " + actualSiguiente.getSiguientes());
-        }
-    }
-
     public ArrayList<classSiguientes> getTablaSiguientes() {
         return tablaSiguientes;
     }
@@ -77,6 +68,19 @@ public class classER {
             classCadena actualLexema = iteradorLexema.next();
             System.out.println("Lexema ingresado: " + actualLexema.getCadena());
         }
+    }
+
+    public void mostrarTablaSiguientes() {
+        Iterator<classSiguientes> iteradorSiguientes = tablaSiguientes.iterator();
+        System.out.println("--Valor--|--ID--|--Siguientes-- ");
+        while (iteradorSiguientes.hasNext()) {
+            classSiguientes actualSiguiente = iteradorSiguientes.next();
+            System.out.println(actualSiguiente.getValor() + " | " + actualSiguiente.getId() + " | " + actualSiguiente.getSiguientes());
+        }
+    }
+
+    public void graficarTablaSiguientes() {
+        
     }
 
 }

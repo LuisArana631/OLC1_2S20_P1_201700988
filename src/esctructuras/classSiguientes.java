@@ -33,7 +33,11 @@ public class classSiguientes {
     }
 
     public void setSiguientes(String siguientes) {
-        this.siguientes = siguientes;
+        if (this.siguientes.equals("")) {
+            this.siguientes = siguientes;
+        } else {
+            this.siguientes = siguientes + "," + this.siguientes;
+        }
     }
 
 }

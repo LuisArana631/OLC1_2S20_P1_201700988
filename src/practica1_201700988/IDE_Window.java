@@ -239,11 +239,11 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.mostrarER();
         Practica1_201700988.mostrarLexemas();
         try {
-            Practica1_201700988.listER.get(1).getArbolExpresion().graficarArbol();
+            Practica1_201700988.listER.get(0).getArbolExpresion().graficarArbol();
         } catch (IOException ex) {
             Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Practica1_201700988.listER.get(1).mostrarTablaSiguientes();
+        Practica1_201700988.listER.get(0).mostrarTablaSiguientes();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void saveAsFile() {
