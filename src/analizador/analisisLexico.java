@@ -345,4 +345,36 @@ public class analisisLexico {
         consola.setText(consola.getText() + "-------------------Fin de Reporte------------------\n");
     }
 
+    public ArrayList<token> getSalida() {
+        return salida;
+    }
+
+    public void setSalida(ArrayList<token> salida) {
+        this.salida = salida;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getAuxiliarLexico() {
+        return auxiliarLexico;
+    }
+
+    public void setAuxiliarLexico(String auxiliarLexico) {
+        this.auxiliarLexico = auxiliarLexico;
+    }
+
+    public int getLinea() {
+        return linea;
+    }
+
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }   
+    
 }

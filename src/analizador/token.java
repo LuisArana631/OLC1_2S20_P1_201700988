@@ -33,9 +33,9 @@ public class token {
     }
 
     //Valores para los tokens de los archivos
-    private tipo tipoToken;
-    private String valor;
-    private int linea;
+    private final tipo tipoToken;
+    private final String valor;
+    private final int linea;
 
     public token(tipo tokenType, String auxLexico, int linea) {
         this.tipoToken = tokenType;
@@ -72,7 +72,7 @@ public class token {
             case LLAVE_DER:
                 return "Llave Derecha";
             case CAMBIO_SEGMENTO:
-                return "Cambio Segmento";
+                return "Cambio de Segmento";
             case CONCATENACION:
                 return "Concatenacion";
             case DISYUNCION:

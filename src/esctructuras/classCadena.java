@@ -5,9 +5,9 @@ public class classCadena {
     private String cadena;
     private Boolean valido;
 
-    public classCadena(String cadena, Boolean valido) {
+    public classCadena(String cadena) {
         this.cadena = cadena;
-        this.valido = valido;
+        this.valido = false;
     }
 
     public String getCadena() {
