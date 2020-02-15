@@ -236,13 +236,14 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.analizador.imprimirLista(txtConsola);
         Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
         //Mostrar contenido cargado al sistema
-        Practica1_201700988.mostrarConj();
-        Practica1_201700988.mostrarER();
-        Practica1_201700988.mostrarLexemas();
+//        Practica1_201700988.mostrarConj();
+//        Practica1_201700988.mostrarER();
+//        Practica1_201700988.mostrarLexemas();
         //Funciones de prueba
         try {
             Practica1_201700988.listER.get(2).getArbolExpresion().graficarArbol();
             Practica1_201700988.listER.get(2).graficarTablaSiguientes();
+            Practica1_201700988.listER.get(2).graficarTablaEstados();
         } catch (IOException ex) {
             Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -53,21 +53,25 @@ public class arbol {
         }
 
         if (!insertBoolean) {
-            if (nodo.getTipo().equals("valor")) {
-                //Omitir
-            } else if (nodo.getTipo().equals("operacion")) {
-                if (nodo.getLeft() == null) {
-                    insertLeft(valor, tipo, nodo);
-                    insertBoolean = true;
-                } else if (nodo.getRight() == null) {
-                    insertRight(valor, tipo, nodo);
-                    insertBoolean = true;
-                }
-            } else if (nodo.getTipo().equals("cerradura")) {
-                if (nodo.getLeft() == null) {
-                    insertLeft(valor, tipo, nodo);
-                    insertBoolean = true;
-                }
+            switch (nodo.getTipo()) {
+            //Omitir
+                case "valor":
+                    break;
+                case "operacion":
+                    if (nodo.getLeft() == null) {
+                        insertLeft(valor, tipo, nodo);
+                        insertBoolean = true;
+                    } else if (nodo.getRight() == null) {
+                        insertRight(valor, tipo, nodo);
+                        insertBoolean = true;
+                    }   break;
+                case "cerradura":
+                    if (nodo.getLeft() == null) {
+                        insertLeft(valor, tipo, nodo);
+                        insertBoolean = true;
+                    }   break;
+                default:
+                    break;
             }
 
         }

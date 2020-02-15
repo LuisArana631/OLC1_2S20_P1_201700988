@@ -2,7 +2,6 @@ package esctructuras;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -37,35 +36,52 @@ public class classER {
     }
 
     public void crearTablaEstados() {
-        ArrayList<classEstados> tablaEstados = new ArrayList<>();
+        ArrayList<classEstados> tabla_Estados = new ArrayList<>();
+        estados = 0;
 
         //Obtener el Estado S0 (Primeros del nodo raiz)
-        tablaEstados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros()));
+        tabla_Estados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros(), false));
         estados++;
 
-        //Desglozar todos los estados
+        int repetirFor = 1;
+
+        while (repetirFor != 0) {
+            repetirFor--;
+            //Desglozar todos los estados
+            for (classEstados actualEstado : tablaEstados) {
+                System.out.println("Estado actual: " + actualEstado.getIdEstado());
+
+                String numConjunto = actualEstado.getNumContenidos();
+                String[] numerosID = numConjunto.split(",");
+
+                for (String numero : numerosID) {
+                    if (!existeEstadoNumeros(tablaEstados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
+                        System.out.println(actualEstado.getIdEstado() + "{" + numConjunto + "}");
+                        estados++;
+                        tablaEstados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes(), false));
+                        System.out.println("Siguientes {" + numero + "}:");
+                        System.out.println(this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes() + " -> S" + estados);
+                        repetirFor++;
+                    }
+                    //tablaEstados.get(posEstadoActual(estadoActual.getIdEstado())).addTransicion("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getValor());
+                }
+            }
+        }
+
+        this.tablaEstados = tabla_Estados;
+    }
+
+    public int posEstadoActual(String idEstado) {
+        int pos = 0;
         Iterator<classEstados> iteradorEstados = tablaEstados.iterator();
         while (iteradorEstados.hasNext()) {
             classEstados actualEstado = iteradorEstados.next();
-            extraerEstados(tablaEstados, actualEstado);
-        }
-
-        this.tablaEstados = tablaEstados;
-    }
-
-    public void extraerEstados(ArrayList<classEstados> tablaEstados, classEstados estadoActual) {
-        String numConjunto = estadoActual.getNumContenidos();
-        String[] numerosID = numConjunto.split(",");
-
-        for (String numero : numerosID) {
-            if (!existeEstadoNumeros(tablaEstados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
-                tablaEstados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes()));
-                estadoActual.addTransicion("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getValor());
-                estados++;
-            } else {
-                estadoActual.addTransicion("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getValor());
+            if (actualEstado.getIdEstado().equals(idEstado)) {
+                break;
             }
+            pos++;
         }
+        return pos;
     }
 
     public int posIdTablaSiguientes(String numero) {
@@ -164,6 +180,62 @@ public class classER {
         }
     }
 
+    public void graficarTablaEstados() throws IOException {
+        if (!tablaSiguientes.isEmpty()) {
+            String path = System.getProperty("user.home");
+            String Rpath = path;
+            Rpath += "\\Desktop";
+            path += "\\Desktop\\TablaEstados.dot";
+            File archivo = new File(path);
+            if (!archivo.exists()) {
+                archivo.createNewFile();
+            }
+
+            int countSimbolos = tablaSiguientes.size();
+            //Escribimos dentro del archivo .dot
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+                write.println("digraph TablaEstados{");
+                write.println("tbl [");
+                write.println("shape = plaintext");
+                write.println("label = <");
+                write.println("<table border='0' cellborder='1' color='black' cellspacing='0'>");
+
+                //Encabezado de la tabla
+                write.print("<tr><td></td>");
+                for (int i = 0; i < countSimbolos; i++) {
+                    write.print("<td>" + tablaSiguientes.get(i).getValor() + "</td>");
+                }
+                write.println("</tr>");
+
+                //Codigo HTML Tabla
+                Iterator<classEstados> iteradorEstados = tablaEstados.iterator();
+                while (iteradorEstados.hasNext()) {
+                    classEstados actualEstado = iteradorEstados.next();
+                    String estadosHTML = "<tr><td>" + actualEstado.getIdEstado() + "</td>";
+
+                    for (int j = 0; j < countSimbolos; j++) {
+                        estadosHTML += actualEstado.getTransicionHTML(this.tablaSiguientes.get(j).getValor());
+                    }
+
+                    estadosHTML += "</tr>";
+                    write.println(estadosHTML);
+                }
+                //---------------
+
+                write.println("</table>");
+                write.println(">];");
+                write.println("}");
+                write.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear el reporte de archivos." + e, "Error con los archivos.", JOptionPane.ERROR_MESSAGE);
+            }
+
+            //Generar la imagen con el comando cmd
+            String pathPng = Rpath + "\\TablaSiguientes.png";
+            crearImagen(path, pathPng);
+        }
+    }
+
     public void graficarTablaSiguientes() throws IOException {
         if (!tablaSiguientes.isEmpty()) {
             String path = System.getProperty("user.home");
@@ -175,7 +247,7 @@ public class classER {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph TablaSiguientes{");
                 write.println("tbl [");
                 write.println("shape = plaintext");

@@ -1,6 +1,7 @@
 package esctructuras;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class classEstados {
 
@@ -50,6 +51,22 @@ public class classEstados {
 
     public void setTransiciones(ArrayList<classEstadosNext> transiciones) {
         this.transiciones = transiciones;
+    }
+
+    public String getTransicionHTML(String simbolo) {
+        String salidaHTML = "";
+        Iterator<classEstadosNext> iteradorEstadosSiguientes = this.transiciones.iterator();
+        while (iteradorEstadosSiguientes.hasNext()) {
+            classEstadosNext estadoNextActual = iteradorEstadosSiguientes.next();
+            System.out.println(estadoNextActual.getEstadoNext() + " -> " + estadoNextActual.getValor());
+            if (simbolo.equals(estadoNextActual.getValor())) {
+                salidaHTML = "<td>" + estadoNextActual.getEstadoNext() + "</td>";
+            } else {
+                salidaHTML = "<td></td>";
+            }
+
+        }
+        return salidaHTML;
     }
 
 }
