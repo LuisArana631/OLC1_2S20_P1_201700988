@@ -30,6 +30,8 @@ public class Practica1_201700988 {
         ventana.setTitle("RegexJava 0.1");
     }
     
+    
+    //Funciones no importantes solo para mostrar contenido encerrar en comentario
     public static void mostrarConj(){
         Iterator<classConj> iteradorConj = Practica1_201700988.listConj.iterator();
         while (iteradorConj.hasNext()) {

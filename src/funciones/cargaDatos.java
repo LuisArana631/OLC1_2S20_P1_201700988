@@ -160,9 +160,15 @@ public class cargaDatos {
                             break;
                         case "Punto y coma":
                             state = 0;
+                            //Agregar numero a la hoja # de aceptacion
                             Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().idAceptacion();
+                            //Calcular anulable, primeros y ultimos
                             Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().calculos();
-                            Practica1_201700988.listER.get(posER(idActual)).setTablaSiguientes(Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().crearTablaSiguientes());
+                            //Crear tabla de siguientes
+                            Practica1_201700988.listER.get(posER(idActual)).crearTablaSiguientes();
+                            //Crear tabla de estados
+                            Practica1_201700988.listER.get(posER(idActual)).crearTablaEstados();
+                            //Crear AFD
                             break;
                         default:
                             break;
