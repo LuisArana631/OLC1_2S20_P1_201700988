@@ -33,8 +33,8 @@ public class classEstados {
         this.numContenidos = numContenidos;
     }
 
-    public void addTransicion(String estadoNext, String valor) {
-        this.transiciones.add(new classEstadosNext(estadoNext, valor));
+    public void addTransicion(String estadoNext, String valor, int idValor) {
+        this.transiciones.add(new classEstadosNext(estadoNext, valor, idValor));
     }
 
     public String getIdEstado() {
@@ -53,18 +53,34 @@ public class classEstados {
         this.transiciones = transiciones;
     }
 
-    public String getTransicionHTML(String simbolo) {
+    public boolean existeTransicion(String estado, int valor) {
+        Iterator<classEstadosNext> iteradorNext = this.transiciones.iterator();
+        while (iteradorNext.hasNext()) {
+            classEstadosNext nextActual = iteradorNext.next();
+            if (nextActual.getEstadoNext().equals(estado) && nextActual.getIdVal() == valor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void printTransiciones() {
+        for (int i = 0; i < this.transiciones.size(); i++) {
+            classEstadosNext estadoNextActual = this.transiciones.get(i);
+            System.out.println("Transicion: " + estadoNextActual.getValor() + "->" + estadoNextActual.getEstadoNext());
+        }
+    }
+
+    public String getTransicionHTML(int val) {
         String salidaHTML = "";
-        Iterator<classEstadosNext> iteradorEstadosSiguientes = this.transiciones.iterator();
-        while (iteradorEstadosSiguientes.hasNext()) {
-            classEstadosNext estadoNextActual = iteradorEstadosSiguientes.next();
-            System.out.println(estadoNextActual.getEstadoNext() + " -> " + estadoNextActual.getValor());
-            if (simbolo.equals(estadoNextActual.getValor())) {
+        for (int i = 0; i < this.transiciones.size(); i++) {
+            classEstadosNext estadoNextActual = this.transiciones.get(i);
+            if (val == estadoNextActual.getIdVal()) {
                 salidaHTML = "<td>" + estadoNextActual.getEstadoNext() + "</td>";
+                break;
             } else {
                 salidaHTML = "<td></td>";
             }
-
         }
         return salidaHTML;
     }

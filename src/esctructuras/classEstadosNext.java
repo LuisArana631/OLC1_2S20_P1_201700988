@@ -4,10 +4,20 @@ public class classEstadosNext {
 
     private String estadoNext;
     private String valor;
+    private int idVal;
 
-    public classEstadosNext(String estadoNext, String valor) {
+    public classEstadosNext(String estadoNext, String valor, int idVal) {
         this.estadoNext = estadoNext;
         this.valor = valor;
+        this.idVal = idVal;
+    }
+
+    public int getIdVal() {
+        return idVal;
+    }
+
+    public void setIdVal(int idVal) {
+        this.idVal = idVal;
     }
 
     public String getEstadoNext() {

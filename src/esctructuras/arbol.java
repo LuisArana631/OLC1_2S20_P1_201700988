@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
+import practica1_201700988.Practica1_201700988;
 
 public class arbol {
 
@@ -54,7 +55,7 @@ public class arbol {
 
         if (!insertBoolean) {
             switch (nodo.getTipo()) {
-            //Omitir
+                //Omitir
                 case "valor":
                     break;
                 case "operacion":
@@ -64,12 +65,14 @@ public class arbol {
                     } else if (nodo.getRight() == null) {
                         insertRight(valor, tipo, nodo);
                         insertBoolean = true;
-                    }   break;
+                    }
+                    break;
                 case "cerradura":
                     if (nodo.getLeft() == null) {
                         insertLeft(valor, tipo, nodo);
                         insertBoolean = true;
-                    }   break;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -118,13 +121,13 @@ public class arbol {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\Arbol.dot";
+            path += "\\Desktop\\Arbol" + Practica1_201700988.conteo_Expresiones + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -136,14 +139,14 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
+            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\Archivos.png";
+            String pathPng = Rpath + "\\Archivos" + Practica1_201700988.conteo_Expresiones + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -163,7 +166,7 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
+            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
                 if (nodo.getValor().length() == 1) {
                     write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
                 } else {

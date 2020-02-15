@@ -231,6 +231,7 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Practica1_201700988.conteo_Expresiones = 0;
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
@@ -240,13 +241,7 @@ public class IDE_Window extends javax.swing.JFrame {
 //        Practica1_201700988.mostrarER();
 //        Practica1_201700988.mostrarLexemas();
         //Funciones de prueba
-        try {
-            Practica1_201700988.listER.get(2).getArbolExpresion().graficarArbol();
-            Practica1_201700988.listER.get(2).graficarTablaSiguientes();
-            Practica1_201700988.listER.get(2).graficarTablaEstados();
-        } catch (IOException ex) {
-            Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
     }//GEN-LAST:event_jButton2ActionPerformed
 

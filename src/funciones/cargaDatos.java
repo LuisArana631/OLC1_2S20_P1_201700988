@@ -3,9 +3,13 @@ package funciones;
 import analizador.token;
 import esctructuras.classConj;
 import esctructuras.classER;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import practica1_201700988.IDE_Window;
 import practica1_201700988.Practica1_201700988;
 
 public class cargaDatos {
@@ -34,6 +38,7 @@ public class cargaDatos {
                                 idActual = actualToken.getValor();
                                 if (!existeER(idActual)) {
                                     Practica1_201700988.listER.add(new classER(idActual));
+                                    Practica1_201700988.conteo_Expresiones++;
                                 }
                             } else if (!existeER(idActual)) {
                                 //No hacer nada, incluso reportar que no hay ER para evaluar
@@ -189,7 +194,15 @@ public class cargaDatos {
                             //Crear tabla de estados
                             Practica1_201700988.listER.get(posER(idActual)).crearTablaEstados();
                             //Crear AFD
-                            System.out.println("Pedro es puto, a ver;");
+
+                            //Crear archivos
+                            try {
+                                Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().graficarArbol();
+                                Practica1_201700988.listER.get(posER(idActual)).graficarTablaSiguientes();
+                                Practica1_201700988.listER.get(posER(idActual)).graficarTablaEstados();
+                            } catch (IOException ex) {
+                                Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             break;
                         default:
                             break;
