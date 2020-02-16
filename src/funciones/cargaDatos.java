@@ -193,13 +193,12 @@ public class cargaDatos {
                             Practica1_201700988.listER.get(posER(idActual)).crearTablaSiguientes();
                             //Crear tabla de estados
                             Practica1_201700988.listER.get(posER(idActual)).crearTablaEstados();
-                            //Crear AFD
-
                             //Crear archivos
                             try {
                                 Practica1_201700988.listER.get(posER(idActual)).getArbolExpresion().graficarArbol();
                                 Practica1_201700988.listER.get(posER(idActual)).graficarTablaSiguientes();
                                 Practica1_201700988.listER.get(posER(idActual)).graficarTablaEstados();
+                                Practica1_201700988.listER.get(posER(idActual)).graficarAFD();
                             } catch (IOException ex) {
                                 Logger.getLogger(IDE_Window.class.getName()).log(Level.SEVERE, null, ex);
                             }

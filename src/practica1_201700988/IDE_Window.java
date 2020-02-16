@@ -11,17 +11,17 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class IDE_Window extends javax.swing.JFrame {
-
+    
     JFileChooser fileSelector = new JFileChooser();
     File fileSelect;
     FileInputStream fileInput;
     FileOutputStream fileOutput;
-
+    
     public IDE_Window() {
         fileSelector.setFileFilter(new FileNameExtensionFilter("Compi File (*.er)", "er"));
         initComponents();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -29,6 +29,7 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtFile = new javax.swing.JEditorPane();
+        jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -60,29 +61,42 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 490, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 500, 360));
 
-        jButton1.setText("Generar Autómatas");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 180, 40));
+        jButton3.setText("Evaluar Lexemas");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 370, 150, 30));
 
-        jButton2.setText("Analizar Entradas");
+        jButton1.setText("Analizador Léxico");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 30));
+
+        jButton2.setText("Generar Autómatas");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 180, 40));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 150, 30));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Consola de Salida"));
 
@@ -122,11 +136,11 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 180, 390));
@@ -137,11 +151,11 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, 260, 390));
@@ -206,7 +220,7 @@ public class IDE_Window extends javax.swing.JFrame {
         if (fileSelector.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             fileSelect = fileSelector.getSelectedFile();
             if (fileSelect.canRead()) {
-
+                
                 String documento = openFile(fileSelect);
                 txtFile.setText(documento);
             }
@@ -231,20 +245,24 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Practica1_201700988.conteo_Expresiones = 0;
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
-        Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
         //Mostrar contenido cargado al sistema
 //        Practica1_201700988.mostrarConj();
 //        Practica1_201700988.mostrarER();
 //        Practica1_201700988.mostrarLexemas();
-        //Funciones de prueba
-        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Practica1_201700988.validarLexema.validarLexemas(txtRegular);
+    }//GEN-LAST:event_jButton3ActionPerformed
+    
     private void saveAsFile() {
         if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
             fileSelect = fileSelector.getSelectedFile();
@@ -257,7 +275,7 @@ public class IDE_Window extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private String saveFile(File archivo, String contenido) {
         String mensaje = null;
         String fileName = "";
@@ -274,12 +292,12 @@ public class IDE_Window extends javax.swing.JFrame {
             fileName = fileSelect.getName().replace(".er", "");
             mensaje = "Archivo " + fileName + " guardado exitosamente.";
         } catch (IOException e) {
-
+            
         }
         this.setTitle(fileName + " - RegexJava 0.1");
         return mensaje;
     }
-
+    
     private String openFile(File archivo) {
         String contenido = "";
         try {
@@ -290,11 +308,11 @@ public class IDE_Window extends javax.swing.JFrame {
                 contenido += caracter;
             }
         } catch (IOException e) {
-
+            
         }
         String fileName = fileSelect.getName().replace(".er", "");
         this.setTitle(fileName + " - RegexJava 0.1");
-
+        
         return contenido;
     }
 
@@ -334,6 +352,7 @@ public class IDE_Window extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

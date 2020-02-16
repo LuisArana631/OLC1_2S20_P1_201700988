@@ -17,6 +17,19 @@ public class classEstados {
         this.aceptacion = aceptacion;
     }
 
+    public String pasoPermitido(int caracter) {
+        Iterator<classEstadosNext> iteradorNext = this.transiciones.iterator();
+        while (iteradorNext.hasNext()) {
+            classEstadosNext actualNext = iteradorNext.next();
+
+            if (actualNext.getIdVal() == caracter) {
+                return actualNext.getEstadoNext();
+            }
+
+        }
+        return "****Error****";
+    }
+
     public boolean isAceptacion() {
         return aceptacion;
     }

@@ -40,8 +40,8 @@ public class classER {
         ArrayList<classEstados> tabla_Estados = new ArrayList<>();
         estados = 0;
 
-        //Obtener el Estado S0 (Primeros del nodo raiz)
-        tabla_Estados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros(), false));
+        //Obtener el Estado S0 (Primeros del nodo raiz)        
+        tabla_Estados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros(), estadoAceptacion(arbolExpresion.getRaiz().getPrimeros())));
 
         int repetirFor = 1;
 
@@ -61,7 +61,7 @@ public class classER {
                         if (this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes() != "") {
                             if (!existeEstadoNumeros(tabla_Estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
                                 estados++;
-                                tabla_Estados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes(), false));
+                                tabla_Estados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes(), estadoAceptacion(this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())));
                                 repetirFor++;
                             }
                         }
@@ -90,10 +90,21 @@ public class classER {
                 }
             }
         }
-        printEstados();
+        //printEstados();
         //Insertar las conexiones
         this.tablaEstados = tabla_Estados;
 
+    }
+
+    private boolean estadoAceptacion(String numConjunto) {
+        String[] numerosID = numConjunto.split(",");
+        for (String numero : numerosID) {
+            if (Integer.parseInt(numero) == this.tablaSiguientes.get(this.tablaSiguientes.size() - 1).getId()) {
+                System.out.println("Es aceptacion");
+                return true;
+            }
+        }
+        return false;
     }
 
     public void printEstados() {
@@ -336,10 +347,56 @@ public class classER {
         }
     }
 
-    public void graficarAFD(){
-        
+    public void graficarAFD() throws IOException {
+        if (!tablaEstados.isEmpty()) {
+            String path = System.getProperty("user.home");
+            String Rpath = path;
+            Rpath += "\\Desktop";
+            path += "\\Desktop\\AFD" + Practica1_201700988.conteo_Expresiones + ".dot";
+            File archivo = new File(path);
+            if (!archivo.exists()) {
+                archivo.createNewFile();
+            }
+            //Escribimos dentro del archivo .dot
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+                write.println("digraph AFD{");
+                write.println("rankdir=LR;");
+                write.println("size=\"13\"");
+
+                //Crear nodo de aceptacion
+                for (int i = 0; i <= this.tablaEstados.size() - 1; i++) {
+                    System.out.println("Aceptacion: " + this.tablaEstados.get(i).isAceptacion());
+                    if (this.tablaEstados.get(i).isAceptacion()) {
+                        write.println(this.tablaEstados.get(i).getIdEstado() + "[peripheries = 2, shape=circle];");
+                    }
+                }
+
+                //Datos de los demas nodos                
+                write.println("node [shape=circle,peripheries = 1];");
+                write.println("node [fontcolor=black];");
+                write.println("edge [color=black];");
+                write.println("secret_node [style=invis];");
+                write.println("secret_node -> S0 [label=\"inicio\"];");
+
+                //Insertar todas las conexiones
+                for (int i = 0; i <= this.tablaEstados.size() - 1; i++) {
+                    for (int j = 0; j <= this.tablaEstados.get(i).getTransiciones().size() - 1; j++) {
+                        write.println(this.tablaEstados.get(i).getIdEstado() + " -> " + this.tablaEstados.get(i).getTransiciones().get(j).getEstadoNext() + "[label=\"" + this.tablaEstados.get(i).getTransiciones().get(j).getValor() + "\"];");
+                    }
+                }
+
+                write.println("}");
+                write.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear el reporte de archivos." + e, "Error con los archivos.", JOptionPane.ERROR_MESSAGE);
+            }
+
+            //Generar la imagen con el comando cmd
+            String pathPng = Rpath + "\\ADF" + Practica1_201700988.conteo_Expresiones + ".png";
+            crearImagen(path, pathPng);
+        }
     }
-    
+
     private void crearImagen(String rutaDot, String rutaPng) {
         try {
             ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", rutaPng, rutaDot);

@@ -5,6 +5,7 @@ import esctructuras.arbol;
 import esctructuras.classConj;
 import esctructuras.classER;
 import funciones.cargaDatos;
+import funciones.validarLexemas;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ public class Practica1_201700988 {
     //Instancia de clases
     public static analisisLexico analizador = new analisisLexico();
     public static cargaDatos upDate = new cargaDatos();
+    public static validarLexemas validarLexema = new validarLexemas();
 
     //Instancia de datos
     public static int conteoAnalisis = 0;
