@@ -22,7 +22,6 @@ public class validarLexemas {
                 classCadena actualLexema = iteradorLexemas.next();
                 evaluarLexema(actualLexema.getCadena(), actualER.getTablaEstados(), consola, actualER.getId(), posER);
             }
-
             posER++;
         }
 
@@ -30,20 +29,21 @@ public class validarLexemas {
 
     private void evaluarLexema(String lexema, ArrayList<classEstados> afd, JTextArea consola, String idER, int posER) {
         classEstados estadoActual = afd.get(0);
+        String concatenado = "";
         String siNo = "si";
         for (int i = 0; i < lexema.length(); i++) {
             String caracter = Character.toString(lexema.charAt(i));
-            System.out.println("caracter: " + caracter);
-            String estadoSiguiente = estadoActual.pasoPermitido(caracter);
+            String estadoSiguiente = estadoActual.pasoPermitido(caracter, estadoActual.getIdEstado(), concatenado);
             if (!estadoSiguiente.equals("****Error****")) {
                 estadoActual = afd.get(Practica1_201700988.listER.get(posER).posEstadoActual(estadoSiguiente));
+                concatenado += caracter;
                 siNo = " si";
             } else {
                 siNo = " no";
                 break;
             }
         }
-        consola.setText(consola.getText() + "El lexema: " + lexema + siNo + " es válida con la expresión regular: " + idER + "\n");
+        consola.setText(consola.getText() + "El lexema: \"" + lexema + "\" " + siNo + " es válida con la expresión regular: " + idER + "\n");
     }
 
 }

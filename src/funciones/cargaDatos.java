@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
-import javax.swing.JTree;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import practica1_201700988.IDE_Window;

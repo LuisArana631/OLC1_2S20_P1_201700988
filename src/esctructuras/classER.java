@@ -98,7 +98,7 @@ public class classER {
             String[] numerosID = numConjunto.split(",");
 //            System.out.println(tabla_Estados.get(i).getIdEstado() + "{" + numConjunto + "}");
             for (String numero : numerosID) {
-                if (this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes() != "") {
+                if (!"".equals(this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
                     String siguientes = this.tablaSiguientes.get(Integer.parseInt(numero) - 1).getSiguientes();
                     int posEstado = posEstadoNumeros(tabla_Estados, siguientes);
                     if (!tabla_Estados.get(i).existeTransicion(tabla_Estados.get(posEstado).getIdEstado(), Integer.parseInt(numero))) {

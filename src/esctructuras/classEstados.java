@@ -18,7 +18,7 @@ public class classEstados {
         this.aceptacion = aceptacion;
     }
 
-    public String pasoPermitido(String caracter) {
+    public String pasoPermitido(String caracter, String estadoActual, String cadena) {
         Iterator<classEstadosNext> iteradorNext = this.transiciones.iterator();
         while (iteradorNext.hasNext()) {
             classEstadosNext actualNext = iteradorNext.next();
@@ -26,7 +26,7 @@ public class classEstados {
             boolean esConjunto = false;
             int posConj = 0;
 
-            for (int i = 0; i < Practica1_201700988.listConj.size(); i++) {                
+            for (int i = 0; i < Practica1_201700988.listConj.size(); i++) {
                 if (actualNext.getValor().equals(Practica1_201700988.listConj.get(i).getId())) {
                     esConjunto = true;
                     posConj = i;
@@ -40,11 +40,13 @@ public class classEstados {
             } else if (actualNext.getValor().equals(caracter)) {
                 return actualNext.getEstadoNext();
             } else if (actualNext.getValor().length() > 1) {
-                for (int i = 0; i < actualNext.getValor().length(); i++) {
-                    if (Character.toString(actualNext.getValor().charAt(i)).equals(caracter)) {
-                        return actualNext.getEstadoNext();
-                    }
+                //Evaluar
+                if (cadena.equals(actualNext.getValor())) {
+                    return actualNext.getEstadoNext();
+                } else {
+                    return estadoActual;
                 }
+
             }
 
         }

@@ -345,11 +345,13 @@ public class arbol {
         if (nodo.getRight() != null) {
             insertarSiguientes(tablaSiguientes, nodo.getRight());
         }
+
     }
 
     private void insertNext(ArrayList<classSiguientes> tablaSiguientes, String siguientes, String valores) {
         String[] numerosValores = valores.split(",");
         for (String numero : numerosValores) {
+            System.out.println("numero: " + numero);
             tablaSiguientes.get(posValor(tablaSiguientes, numero)).setSiguientes(siguientes);
         }
     }
