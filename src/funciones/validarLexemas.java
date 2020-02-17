@@ -19,8 +19,7 @@ public class validarLexemas {
 
             Iterator<classCadena> iteradorLexemas = actualER.getCadenas().iterator();
             while (iteradorLexemas.hasNext()) {
-                classCadena actualLexema = iteradorLexemas.next();
-                System.out.println("Total cadenas: " + actualER.getCadenas().size());
+                classCadena actualLexema = iteradorLexemas.next();                
                 evaluarLexema(actualLexema.getCadena(), actualER.getTablaEstados(), consola, actualER.getId(), posER);
             }
 
@@ -33,7 +32,8 @@ public class validarLexemas {
         classEstados estadoActual = afd.get(0);
         String siNo = "si";
         for (int i = 0; i < lexema.length(); i++) {
-            char caracter = lexema.charAt(i);
+            String caracter = Character.toString(lexema.charAt(i));
+            System.out.println("caracter: " + caracter);
             String estadoSiguiente = estadoActual.pasoPermitido(caracter);
             if (!estadoSiguiente.equals("****Error****")) {
                 estadoActual = afd.get(Practica1_201700988.listER.get(posER).posEstadoActual(estadoSiguiente));

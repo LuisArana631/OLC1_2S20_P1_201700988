@@ -18,14 +18,32 @@ public class classER {
     private ArrayList<classCadena> cadenas;
     private ArrayList<classSiguientes> tablaSiguientes;
     private ArrayList<classEstados> tablaEstados;
+    private int numDocumentos;
 
-    public classER(String id) {
+    public classER(String id, int numDocumentos) {
         this.id = id;
         this.arbolExpresion = new arbol();
         this.cadenas = new ArrayList<>();
         this.tablaSiguientes = new ArrayList<>();
         this.tablaEstados = new ArrayList<>();
         this.arbolExpresion.inicializarArbol();
+        this.numDocumentos = numDocumentos;
+    }
+
+    public int getEstados() {
+        return estados;
+    }
+
+    public void setEstados(int estados) {
+        this.estados = estados;
+    }
+
+    public int getNumDocumentos() {
+        return numDocumentos;
+    }
+
+    public void setNumDocumentos(int numDocumentos) {
+        this.numDocumentos = numDocumentos;
     }
 
     public ArrayList<classEstados> getTablaEstados() {
@@ -100,7 +118,6 @@ public class classER {
         String[] numerosID = numConjunto.split(",");
         for (String numero : numerosID) {
             if (Integer.parseInt(numero) == this.tablaSiguientes.get(this.tablaSiguientes.size() - 1).getId()) {
-                System.out.println("Es aceptacion");
                 return true;
             }
         }
@@ -365,7 +382,6 @@ public class classER {
 
                 //Crear nodo de aceptacion
                 for (int i = 0; i <= this.tablaEstados.size() - 1; i++) {
-                    System.out.println("Aceptacion: " + this.tablaEstados.get(i).isAceptacion());
                     if (this.tablaEstados.get(i).isAceptacion()) {
                         write.println(this.tablaEstados.get(i).getIdEstado() + "[peripheries = 2, shape=circle];");
                     }

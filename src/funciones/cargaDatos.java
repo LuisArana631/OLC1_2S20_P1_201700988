@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import practica1_201700988.IDE_Window;
 import practica1_201700988.Practica1_201700988;
 
@@ -37,8 +40,9 @@ public class cargaDatos {
                                 state = 2;
                                 idActual = actualToken.getValor();
                                 if (!existeER(idActual)) {
-                                    Practica1_201700988.listER.add(new classER(idActual));
+                                    Practica1_201700988.listER.add(new classER(idActual, Practica1_201700988.conteo_Expresiones));
                                     Practica1_201700988.conteo_Expresiones++;
+
                                 }
                             } else if (!existeER(idActual)) {
                                 //No hacer nada, incluso reportar que no hay ER para evaluar
@@ -88,9 +92,9 @@ public class cargaDatos {
                                                 char inicio = Practica1_201700988.listConj.get(posConj(idActual)).getStart();
                                                 char fin = actualToken.getValor().charAt(0);
 
-                                                for (int i = (int) inicio; i < (int) fin + 1; i++) {
+                                                for (int i = (int) inicio + 1; i < (int) fin + 1; i++) {
                                                     if (!Character.isLetterOrDigit((char) i)) {
-                                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add((char) i);
+                                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(Character.toString((char) i));
                                                     }
                                                 }
                                             } else {
@@ -104,7 +108,7 @@ public class cargaDatos {
 
                                                 for (int i = (int) inicio; i < (int) fin + 1; i++) {
                                                     if (Character.isLetter((char) i)) {
-                                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add((char) i);
+                                                        Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(Character.toString((char) i));
                                                     }
                                                 }
                                             } else {
@@ -116,8 +120,8 @@ public class cargaDatos {
                                                 int inicio = Integer.parseInt(Practica1_201700988.listConj.get(posConj(idActual)).getStringStart());
                                                 int fin = Integer.parseInt(actualToken.getValor());
 
-                                                for (int i = inicio; i < fin + 1; i++) {
-                                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(i);
+                                                for (int i = inicio + 1; i < fin + 1; i++) {
+                                                    Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(Integer.toString(i));
                                                 }
                                             } else {
                                                 Practica1_201700988.listConj.get(posConj(idActual)).getConjunto().add(actualToken.getValor());
@@ -263,6 +267,36 @@ public class cargaDatos {
             }
         }
         return false;
+    }
+
+    public DefaultTreeModel treeVisual() {
+        DefaultMutableTreeNode inicial = new DefaultMutableTreeNode("Autómata");
+        DefaultTreeModel raiz = new DefaultTreeModel(inicial);
+
+        DefaultMutableTreeNode arbol = new DefaultMutableTreeNode("Árboles");
+        DefaultMutableTreeNode tablaSiguientes = new DefaultMutableTreeNode("Tablas de Siguientes");
+        DefaultMutableTreeNode tablaEstados = new DefaultMutableTreeNode("Tablas de Estados");
+        DefaultMutableTreeNode afd = new DefaultMutableTreeNode("AFD");
+
+        inicial.add(arbol);
+        inicial.add(tablaSiguientes);
+        inicial.add(tablaEstados);
+        inicial.add(afd);
+
+        System.out.println("Cantidad de ER: " + Practica1_201700988.listER.size());
+        for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
+            DefaultMutableTreeNode arbolER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());
+            DefaultMutableTreeNode tablaSER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());
+            DefaultMutableTreeNode tablaEER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());
+            DefaultMutableTreeNode afdER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());
+
+            arbol.add(arbolER);
+            tablaSiguientes.add(tablaSER);
+            tablaEstados.add(tablaEER);
+            afd.add(afdER);
+        }
+
+        return raiz;
     }
 
 }

@@ -19,12 +19,11 @@ public class Practica1_201700988 {
 
     //Instancia de datos
     public static int conteoAnalisis = 0;
+    public static int conteo_Expresiones = 0;
+    public static String name_Img = "";
     public static ArrayList<classER> listER = new ArrayList<>();
     public static ArrayList<classConj> listConj = new ArrayList<>();
     public static arbol tree = new arbol();
-
-    //Conteo de ER para nombrar archivo
-    public static int conteo_Expresiones = 0;
 
     public static void main(String[] args) throws IOException {
         IDE_Window ventana = new IDE_Window();

@@ -30,9 +30,10 @@ public class analisisLexico {
                             auxiliarLexico += caracter;
                             break;
                         }//Evaluar numero
-                        else if (Character.isLetter(caracter)) {
+                        else if (Character.isDigit(caracter)) {                            
                             estado = 3;
                             auxiliarLexico += caracter;
+                            break;
                         }//Evaluar Simbolos
                         else if (caracter >= 32 && caracter <= 125) {
                             try {

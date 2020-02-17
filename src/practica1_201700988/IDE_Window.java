@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class IDE_Window extends javax.swing.JFrame {
     
@@ -29,16 +28,19 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtFile = new javax.swing.JEditorPane();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnLexema = new javax.swing.JButton();
+        btnLexico = new javax.swing.JButton();
+        btnAutomata = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtRegular = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         jPanel4 = new javax.swing.JPanel();
+        lblImg = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -74,29 +76,29 @@ public class IDE_Window extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 500, 360));
 
-        jButton3.setText("Evaluar Lexemas");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnLexema.setText("Evaluar Lexemas");
+        btnLexema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnLexemaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 370, 150, 30));
+        getContentPane().add(btnLexema, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 370, 150, 30));
 
-        jButton1.setText("Analizador Léxico");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLexico.setText("Analizador Léxico");
+        btnLexico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLexicoActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 30));
+        getContentPane().add(btnLexico, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 30));
 
-        jButton2.setText("Generar Autómatas");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAutomata.setText("Generar Autómatas");
+        btnAutomata.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAutomataActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 150, 30));
+        getContentPane().add(btnAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 150, 30));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Consola de Salida"));
 
@@ -114,9 +116,9 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,22 +130,33 @@ public class IDE_Window extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 970, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 1070, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Distribución"));
+
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTree1MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTree1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 180, 390));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 280, 390));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Imágenes"));
 
@@ -151,14 +164,20 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblImg, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblImg, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, 260, 390));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, 260, 390));
 
         jMenu1.setText("Archivo");
 
@@ -244,24 +263,34 @@ public class IDE_Window extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutomataActionPerformed
+        Practica1_201700988.listConj.clear();
+        Practica1_201700988.listER.clear();
         Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
-    }//GEN-LAST:event_jButton2ActionPerformed
+        jTree1.setModel(Practica1_201700988.upDate.treeVisual());
+    }//GEN-LAST:event_btnAutomataActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexicoActionPerformed
         Practica1_201700988.conteo_Expresiones = 0;
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
+
         //Mostrar contenido cargado al sistema
 //        Practica1_201700988.mostrarConj();
 //        Practica1_201700988.mostrarER();
 //        Practica1_201700988.mostrarLexemas();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnLexicoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnLexemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexemaActionPerformed
+        txtRegular.setText("");
         Practica1_201700988.validarLexema.validarLexemas(txtRegular);
-    }//GEN-LAST:event_jButton3ActionPerformed
+
+    }//GEN-LAST:event_btnLexemaActionPerformed
+
+    private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
+
+    }//GEN-LAST:event_jTree1MouseClicked
     
     private void saveAsFile() {
         if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
@@ -350,9 +379,9 @@ public class IDE_Window extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAutomata;
+    private javax.swing.JButton btnLexema;
+    private javax.swing.JButton btnLexico;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -368,6 +397,9 @@ public class IDE_Window extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTree jTree1;
+    private javax.swing.JLabel lblImg;
     private javax.swing.JTextArea txtConsola;
     private javax.swing.JEditorPane txtFile;
     private javax.swing.JTextArea txtRegular;
