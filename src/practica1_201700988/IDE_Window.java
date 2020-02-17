@@ -4,23 +4,25 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class IDE_Window extends javax.swing.JFrame {
-    
+
     JFileChooser fileSelector = new JFileChooser();
     File fileSelect;
     FileInputStream fileInput;
     FileOutputStream fileOutput;
-    
+
     public IDE_Window() {
         fileSelector.setFileFilter(new FileNameExtensionFilter("Compi File (*.er)", "er"));
         initComponents();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,6 +42,7 @@ public class IDE_Window extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
         lblImg = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -70,7 +73,7 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -116,9 +119,9 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -147,37 +150,42 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 280, 390));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 240, 390));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Imágenes"));
+
+        lblImg.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane4.setViewportView(lblImg);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblImg, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblImg, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, 260, 390));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 10, 300, 390));
 
         jMenu1.setText("Archivo");
 
@@ -239,7 +247,7 @@ public class IDE_Window extends javax.swing.JFrame {
         if (fileSelector.showDialog(null, "Abrir") == JFileChooser.APPROVE_OPTION) {
             fileSelect = fileSelector.getSelectedFile();
             if (fileSelect.canRead()) {
-                
+
                 String documento = openFile(fileSelect);
                 txtFile.setText(documento);
             }
@@ -268,6 +276,8 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.listER.clear();
         Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
         jTree1.setModel(Practica1_201700988.upDate.treeVisual());
+
+
     }//GEN-LAST:event_btnAutomataActionPerformed
 
     private void btnLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexicoActionPerformed
@@ -275,6 +285,8 @@ public class IDE_Window extends javax.swing.JFrame {
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
+        Practica1_201700988.analizador.crearPDF();
+        Practica1_201700988.conteoAnalisis++;
 
         //Mostrar contenido cargado al sistema
 //        Practica1_201700988.mostrarConj();
@@ -289,9 +301,41 @@ public class IDE_Window extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLexemaActionPerformed
 
     private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getSelectionPath().getLastPathComponent();
+        String path = System.getProperty("user.home");
 
+        try {
+            for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
+                if (Practica1_201700988.listER.get(i).getId().equals(selectedNode.toString())) {
+                    int numDoc = Practica1_201700988.listER.get(i).getNumDocumentos() + 1;
+                    switch (selectedNode.getParent().toString()) {
+                        case "Árboles":
+                            path += "\\Desktop\\Arbol" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        case "Tablas de Siguientes":
+                            path += "\\Desktop\\TablaSiguientes" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        case "Tablas de Estados":
+                            path += "\\Desktop\\TablaEstados" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        case "AFD":
+                            path += "\\Desktop\\AFD" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        default:
+                            //Nada
+                            break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }//GEN-LAST:event_jTree1MouseClicked
-    
+
     private void saveAsFile() {
         if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
             fileSelect = fileSelector.getSelectedFile();
@@ -304,7 +348,7 @@ public class IDE_Window extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private String saveFile(File archivo, String contenido) {
         String mensaje = null;
         String fileName = "";
@@ -321,12 +365,12 @@ public class IDE_Window extends javax.swing.JFrame {
             fileName = fileSelect.getName().replace(".er", "");
             mensaje = "Archivo " + fileName + " guardado exitosamente.";
         } catch (IOException e) {
-            
+
         }
         this.setTitle(fileName + " - RegexJava 0.1");
         return mensaje;
     }
-    
+
     private String openFile(File archivo) {
         String contenido = "";
         try {
@@ -337,11 +381,11 @@ public class IDE_Window extends javax.swing.JFrame {
                 contenido += caracter;
             }
         } catch (IOException e) {
-            
+
         }
         String fileName = fileSelect.getName().replace(".er", "");
         this.setTitle(fileName + " - RegexJava 0.1");
-        
+
         return contenido;
     }
 
@@ -359,16 +403,21 @@ public class IDE_Window extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -397,6 +446,7 @@ public class IDE_Window extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTree jTree1;
     private javax.swing.JLabel lblImg;

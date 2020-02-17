@@ -127,7 +127,7 @@ public class arbol {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -139,14 +139,14 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
+            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\Archivos" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\Arbol" + Practica1_201700988.conteo_Expresiones + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -166,7 +166,7 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
+            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
                 if (nodo.getValor().length() == 1) {
                     write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
                 } else {

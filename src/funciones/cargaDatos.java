@@ -283,7 +283,6 @@ public class cargaDatos {
         inicial.add(tablaEstados);
         inicial.add(afd);
 
-        System.out.println("Cantidad de ER: " + Practica1_201700988.listER.size());
         for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
             DefaultMutableTreeNode arbolER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());
             DefaultMutableTreeNode tablaSER = new DefaultMutableTreeNode(Practica1_201700988.listER.get(i).getId());

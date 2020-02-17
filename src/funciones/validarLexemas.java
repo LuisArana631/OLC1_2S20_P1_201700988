@@ -19,7 +19,7 @@ public class validarLexemas {
 
             Iterator<classCadena> iteradorLexemas = actualER.getCadenas().iterator();
             while (iteradorLexemas.hasNext()) {
-                classCadena actualLexema = iteradorLexemas.next();                
+                classCadena actualLexema = iteradorLexemas.next();
                 evaluarLexema(actualLexema.getCadena(), actualER.getTablaEstados(), consola, actualER.getId(), posER);
             }
 

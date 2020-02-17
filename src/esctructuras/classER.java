@@ -268,7 +268,7 @@ public class classER {
 
             int countSimbolos = tablaSiguientes.size();
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph TablaEstados{");
                 write.println("tbl [");
                 write.println("shape = plaintext");
@@ -322,7 +322,7 @@ public class classER {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph TablaSiguientes{");
                 write.println("tbl [");
                 write.println("shape = plaintext");
@@ -375,7 +375,7 @@ public class classER {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph AFD{");
                 write.println("rankdir=LR;");
                 write.println("size=\"13\"");
@@ -408,7 +408,7 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\ADF" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\AFD" + Practica1_201700988.conteo_Expresiones + ".png";
             crearImagen(path, pathPng);
         }
     }
