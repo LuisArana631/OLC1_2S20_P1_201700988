@@ -116,18 +116,18 @@ public class arbol {
         return this.raiz == null;
     }
 
-    public void graficarArbol() throws IOException {
+    public void graficarArbol(String numDoc) throws IOException {
         if (!arbolVacio()) {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\Arbol" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\Arbol" + numDoc + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph Arbol{");
                 write.println("node [shape=record, height=.1];");
                 write.close();
@@ -139,14 +139,14 @@ public class arbol {
             crearArbol(this.raiz, path);
 
             //Terminamos de escribir el codigo
-            try ( FileWriter escribir = new FileWriter(path, true);  PrintWriter write = new PrintWriter(escribir)) {
+            try (FileWriter escribir = new FileWriter(path, true); PrintWriter write = new PrintWriter(escribir)) {
                 write.println("label= \"Reporte de árbol\";");
                 write.println("}");
                 write.close();
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\Arbol" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\Arbol" + numDoc + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -166,7 +166,7 @@ public class arbol {
             crearArbol(nodo.getLeft(), pathDot);
 
             //Escribimos dentro del archivo .dot
-            try ( FileWriter escribir = new FileWriter(pathDot, true);  PrintWriter write = new PrintWriter(escribir)) {
+            try (FileWriter escribir = new FileWriter(pathDot, true); PrintWriter write = new PrintWriter(escribir)) {
                 if (nodo.getValor().length() == 1) {
                     write.println("\"node" + nodo.getNumNodo() + "\"[label = \"<f0>" + nodo.getPrimeros() + " |{ " + anulable(nodo) + " | \\" + nodo.getValor() + " | " + nodo.getId() + " } |<f2>" + nodo.getUltimos() + " \"];");
                 } else {
@@ -324,13 +324,13 @@ public class arbol {
         if (nodo.getTipo().equals("operacion") || nodo.getTipo().equals("cerradura")) {
             switch (nodo.getValor()) {
                 case "*":
-                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    insertNext(tablaSiguientes, nodo.getPrimeros(), nodo.getUltimos());
                     break;
                 case ".":
                     insertNext(tablaSiguientes, nodo.getRight().getPrimeros(), nodo.getLeft().getUltimos());
                     break;
                 case "+":
-                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    insertNext(tablaSiguientes, nodo.getPrimeros(), nodo.getUltimos());
                     break;
                 default:
                     //Ignorar
@@ -351,7 +351,6 @@ public class arbol {
     private void insertNext(ArrayList<classSiguientes> tablaSiguientes, String siguientes, String valores) {
         String[] numerosValores = valores.split(",");
         for (String numero : numerosValores) {
-            System.out.println("numero: " + numero);
             tablaSiguientes.get(posValor(tablaSiguientes, numero)).setSiguientes(siguientes);
         }
     }

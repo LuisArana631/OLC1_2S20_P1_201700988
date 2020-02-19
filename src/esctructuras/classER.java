@@ -18,9 +18,9 @@ public class classER {
     private ArrayList<classCadena> cadenas;
     private ArrayList<classSiguientes> tablaSiguientes;
     private ArrayList<classEstados> tablaEstados;
-    private int numDocumentos;
+    private String numDocumentos;
 
-    public classER(String id, int numDocumentos) {
+    public classER(String id, String numDocumentos) {
         this.id = id;
         this.arbolExpresion = new arbol();
         this.cadenas = new ArrayList<>();
@@ -38,11 +38,11 @@ public class classER {
         this.estados = estados;
     }
 
-    public int getNumDocumentos() {
+    public String getNumDocumentos() {
         return numDocumentos;
     }
 
-    public void setNumDocumentos(int numDocumentos) {
+    public void setNumDocumentos(String numDocumentos) {
         this.numDocumentos = numDocumentos;
     }
 
@@ -260,7 +260,7 @@ public class classER {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\TablaEstados" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\TablaEstados" + getNumDocumentos() + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
@@ -268,7 +268,7 @@ public class classER {
 
             int countSimbolos = tablaSiguientes.size();
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph TablaEstados{");
                 write.println("tbl [");
                 write.println("shape = plaintext");
@@ -278,7 +278,19 @@ public class classER {
                 //Encabezado de la tabla
                 write.print("<tr><td></td>");
                 for (int i = 0; i < countSimbolos - 1; i++) {
-                    write.print("<td>" + tablaSiguientes.get(i).getValor() + "</td>");
+                    switch (tablaSiguientes.get(i).getValor()) {
+                        case "<":
+                            write.print("<td>&lt;</td>");
+                            break;
+                        case ">":
+                            write.print("<td>&gt;</td>");
+                            break;
+                        case "&":
+                            write.print("<td>&amp;</td>");
+                            break;
+                        default:
+                            write.print("<td>" + tablaSiguientes.get(i).getValor() + "</td>");
+                    }
                 }
                 write.println("</tr>");
 
@@ -286,13 +298,21 @@ public class classER {
                 Iterator<classEstados> iteradorEstados = tablaEstados.iterator();
                 while (iteradorEstados.hasNext()) {
                     classEstados actualEstado = iteradorEstados.next();
-                    String estadosHTML = "<tr><td>" + actualEstado.getIdEstado() + "</td>";
+
+                    String estadosHTML = "";
+
+                    if (actualEstado.getTransiciones().size() != 0) {
+                        estadosHTML = "<tr><td>" + actualEstado.getIdEstado() + "</td>";
+                    }
 
                     for (int j = 0; j < countSimbolos - 1; j++) {
                         estadosHTML += actualEstado.getTransicionHTML(this.tablaSiguientes.get(j).getId());
                     }
 
-                    estadosHTML += "</tr>";
+                    if (actualEstado.getTransiciones().size() != 0) {
+                        estadosHTML += "</tr>";
+                    }
+
                     write.println(estadosHTML);
                 }
                 //---------------
@@ -306,7 +326,7 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\TablaEstados" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\TablaEstados" + getNumDocumentos() + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -316,13 +336,13 @@ public class classER {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\TablaSiguientes" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\TablaSiguientes" + getNumDocumentos() + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph TablaSiguientes{");
                 write.println("tbl [");
                 write.println("shape = plaintext");
@@ -359,7 +379,7 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\TablaSiguientes" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\TablaSiguientes" + getNumDocumentos() + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -369,13 +389,13 @@ public class classER {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\AFD" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\AFD" + getNumDocumentos() + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
             //Escribimos dentro del archivo .dot
-            try ( PrintWriter write = new PrintWriter(path, "UTF-8")) {
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
                 write.println("digraph AFD{");
                 write.println("rankdir=LR;");
                 write.println("size=\"13\"");
@@ -408,7 +428,7 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\AFD" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\AFD" + getNumDocumentos() + ".png";
             crearImagen(path, pathPng);
         }
     }

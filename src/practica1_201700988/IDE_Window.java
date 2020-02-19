@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -166,7 +167,9 @@ public class IDE_Window extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Imágenes"));
 
+        lblImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImg.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblImg.setMaximumSize(new java.awt.Dimension(1000000000, 1000000000));
         jScrollPane4.setViewportView(lblImg);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -275,9 +278,9 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.listConj.clear();
         Practica1_201700988.listER.clear();
         Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
+        jTree1.removeAll();
         jTree1.setModel(Practica1_201700988.upDate.treeVisual());
-
-
+        jTree1.updateUI();
     }//GEN-LAST:event_btnAutomataActionPerformed
 
     private void btnLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexicoActionPerformed
@@ -303,15 +306,16 @@ public class IDE_Window extends javax.swing.JFrame {
     private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getSelectionPath().getLastPathComponent();
         String path = System.getProperty("user.home");
-
+        lblImg.removeAll();
         try {
             for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
                 if (Practica1_201700988.listER.get(i).getId().equals(selectedNode.toString())) {
-                    int numDoc = Practica1_201700988.listER.get(i).getNumDocumentos() + 1;
+                    String numDoc = Practica1_201700988.listER.get(i).getNumDocumentos();                    
                     switch (selectedNode.getParent().toString()) {
                         case "Árboles":
                             path += "\\Desktop\\Arbol" + numDoc + ".png";
-                            lblImg.setIcon(new ImageIcon(path));
+                            ImageIcon icon = new ImageIcon(path);
+                            lblImg.setIcon(icon);
                             break;
                         case "Tablas de Siguientes":
                             path += "\\Desktop\\TablaSiguientes" + numDoc + ".png";
