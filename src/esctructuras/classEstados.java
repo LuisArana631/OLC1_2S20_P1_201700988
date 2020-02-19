@@ -2,6 +2,7 @@ package esctructuras;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import practica1_201700988.Practica1_201700988;
 
 public class classEstados {
 
@@ -15,6 +16,41 @@ public class classEstados {
         this.numContenidos = numContenidos;
         this.transiciones = new ArrayList<>();
         this.aceptacion = aceptacion;
+    }
+
+    public String pasoPermitido(String caracter, String estadoActual, String cadena) {
+        Iterator<classEstadosNext> iteradorNext = this.transiciones.iterator();
+        while (iteradorNext.hasNext()) {
+            classEstadosNext actualNext = iteradorNext.next();
+
+            boolean esConjunto = false;
+            int posConj = 0;
+
+            for (int i = 0; i < Practica1_201700988.listConj.size(); i++) {
+                if (actualNext.getValor().equals(Practica1_201700988.listConj.get(i).getId())) {
+                    esConjunto = true;
+                    posConj = i;
+                    break;
+                }
+            }
+            if (esConjunto) {
+                if (Practica1_201700988.listConj.get(posConj).existeCaracter(caracter)) {
+                    return actualNext.getEstadoNext();
+                }
+            } else if (actualNext.getValor().equals(caracter)) {
+                return actualNext.getEstadoNext();
+            } else if (actualNext.getValor().length() > 1) {
+                //Evaluar
+                if (cadena.equals(actualNext.getValor())) {
+                    return actualNext.getEstadoNext();
+                } else {
+                    return estadoActual;
+                }
+
+            }
+
+        }
+        return "****Error****";
     }
 
     public boolean isAceptacion() {

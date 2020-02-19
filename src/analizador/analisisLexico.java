@@ -1,8 +1,16 @@
 package analizador;
 
 import analizador.token.tipo;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.JTextArea;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.util.Iterator;
+import practica1_201700988.Practica1_201700988;
 
 public class analisisLexico {
 
@@ -30,9 +38,10 @@ public class analisisLexico {
                             auxiliarLexico += caracter;
                             break;
                         }//Evaluar numero
-                        else if (Character.isLetter(caracter)) {
+                        else if (Character.isDigit(caracter)) {
                             estado = 3;
                             auxiliarLexico += caracter;
+                            break;
                         }//Evaluar Simbolos
                         else if (caracter >= 32 && caracter <= 125) {
                             try {
@@ -375,6 +384,42 @@ public class analisisLexico {
 
     public void setLinea(int linea) {
         this.linea = linea;
-    }   
-    
+    }
+
+    public void crearPDF() {
+        if (!salida.isEmpty()) {
+            String path = System.getProperty("user.home");
+            path += "\\Desktop\\ReporteLexico" + Practica1_201700988.conteoAnalisis + ".pdf";
+
+            try {
+                Document doc = new Document();
+                PdfWriter.getInstance(doc, new FileOutputStream(path));
+                doc.open();
+
+                PdfPTable tabla = new PdfPTable(3);
+                tabla.addCell("Numero");
+                tabla.addCell("Lexema");
+                tabla.addCell("Tipo");
+
+                int conteo = 1;
+
+                Iterator<token> iteradorTokens = this.salida.iterator();
+                while (iteradorTokens.hasNext()) {
+                    token tokenActual = iteradorTokens.next();
+
+                    tabla.addCell(Integer.toString(conteo));
+                    tabla.addCell(tokenActual.getValor());
+                    tabla.addCell(tokenActual.getTipoString());
+
+                    conteo++;
+                }
+
+                doc.add(tabla);
+                doc.close();
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
 }

@@ -84,7 +84,7 @@ public class token {
             case CERRADURA_DUDA:
                 return "Cerradura ?";
             case Numero:
-                return "Numeros";
+                return "Numero";
             case Identificador:
                 return "Identificador";
             case Comentario_Lineal:

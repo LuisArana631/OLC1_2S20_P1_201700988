@@ -18,14 +18,32 @@ public class classER {
     private ArrayList<classCadena> cadenas;
     private ArrayList<classSiguientes> tablaSiguientes;
     private ArrayList<classEstados> tablaEstados;
+    private String numDocumentos;
 
-    public classER(String id) {
+    public classER(String id, String numDocumentos) {
         this.id = id;
         this.arbolExpresion = new arbol();
         this.cadenas = new ArrayList<>();
         this.tablaSiguientes = new ArrayList<>();
         this.tablaEstados = new ArrayList<>();
         this.arbolExpresion.inicializarArbol();
+        this.numDocumentos = numDocumentos;
+    }
+
+    public int getEstados() {
+        return estados;
+    }
+
+    public void setEstados(int estados) {
+        this.estados = estados;
+    }
+
+    public String getNumDocumentos() {
+        return numDocumentos;
+    }
+
+    public void setNumDocumentos(String numDocumentos) {
+        this.numDocumentos = numDocumentos;
     }
 
     public ArrayList<classEstados> getTablaEstados() {
@@ -40,8 +58,8 @@ public class classER {
         ArrayList<classEstados> tabla_Estados = new ArrayList<>();
         estados = 0;
 
-        //Obtener el Estado S0 (Primeros del nodo raiz)
-        tabla_Estados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros(), false));
+        //Obtener el Estado S0 (Primeros del nodo raiz)        
+        tabla_Estados.add(new classEstados("S0", arbolExpresion.getRaiz().getPrimeros(), estadoAceptacion(arbolExpresion.getRaiz().getPrimeros())));
 
         int repetirFor = 1;
 
@@ -61,7 +79,7 @@ public class classER {
                         if (this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes() != "") {
                             if (!existeEstadoNumeros(tabla_Estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
                                 estados++;
-                                tabla_Estados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes(), false));
+                                tabla_Estados.add(new classEstados("S" + estados, this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes(), estadoAceptacion(this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())));
                                 repetirFor++;
                             }
                         }
@@ -80,7 +98,7 @@ public class classER {
             String[] numerosID = numConjunto.split(",");
 //            System.out.println(tabla_Estados.get(i).getIdEstado() + "{" + numConjunto + "}");
             for (String numero : numerosID) {
-                if (this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes() != "") {
+                if (!"".equals(this.tablaSiguientes.get(posIdTablaSiguientes(numero)).getSiguientes())) {
                     String siguientes = this.tablaSiguientes.get(Integer.parseInt(numero) - 1).getSiguientes();
                     int posEstado = posEstadoNumeros(tabla_Estados, siguientes);
                     if (!tabla_Estados.get(i).existeTransicion(tabla_Estados.get(posEstado).getIdEstado(), Integer.parseInt(numero))) {
@@ -90,10 +108,20 @@ public class classER {
                 }
             }
         }
-        printEstados();
+        //printEstados();
         //Insertar las conexiones
         this.tablaEstados = tabla_Estados;
 
+    }
+
+    private boolean estadoAceptacion(String numConjunto) {
+        String[] numerosID = numConjunto.split(",");
+        for (String numero : numerosID) {
+            if (Integer.parseInt(numero) == this.tablaSiguientes.get(this.tablaSiguientes.size() - 1).getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void printEstados() {
@@ -232,7 +260,7 @@ public class classER {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\TablaEstados" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\TablaEstados" + getNumDocumentos() + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
@@ -250,7 +278,19 @@ public class classER {
                 //Encabezado de la tabla
                 write.print("<tr><td></td>");
                 for (int i = 0; i < countSimbolos - 1; i++) {
-                    write.print("<td>" + tablaSiguientes.get(i).getValor() + "</td>");
+                    switch (tablaSiguientes.get(i).getValor()) {
+                        case "<":
+                            write.print("<td>&lt;</td>");
+                            break;
+                        case ">":
+                            write.print("<td>&gt;</td>");
+                            break;
+                        case "&":
+                            write.print("<td>&amp;</td>");
+                            break;
+                        default:
+                            write.print("<td>" + tablaSiguientes.get(i).getValor() + "</td>");
+                    }
                 }
                 write.println("</tr>");
 
@@ -258,13 +298,21 @@ public class classER {
                 Iterator<classEstados> iteradorEstados = tablaEstados.iterator();
                 while (iteradorEstados.hasNext()) {
                     classEstados actualEstado = iteradorEstados.next();
-                    String estadosHTML = "<tr><td>" + actualEstado.getIdEstado() + "</td>";
+
+                    String estadosHTML = "";
+
+                    if (actualEstado.getTransiciones().size() != 0) {
+                        estadosHTML = "<tr><td>" + actualEstado.getIdEstado() + "</td>";
+                    }
 
                     for (int j = 0; j < countSimbolos - 1; j++) {
                         estadosHTML += actualEstado.getTransicionHTML(this.tablaSiguientes.get(j).getId());
                     }
 
-                    estadosHTML += "</tr>";
+                    if (actualEstado.getTransiciones().size() != 0) {
+                        estadosHTML += "</tr>";
+                    }
+
                     write.println(estadosHTML);
                 }
                 //---------------
@@ -278,7 +326,7 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\TablaEstados" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\TablaEstados" + getNumDocumentos() + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -288,7 +336,7 @@ public class classER {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\TablaSiguientes" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\TablaSiguientes" + getNumDocumentos() + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
@@ -331,15 +379,60 @@ public class classER {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\TablaSiguientes" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\TablaSiguientes" + getNumDocumentos() + ".png";
             crearImagen(path, pathPng);
         }
     }
 
-    public void graficarAFD(){
-        
+    public void graficarAFD() throws IOException {
+        if (!tablaEstados.isEmpty()) {
+            String path = System.getProperty("user.home");
+            String Rpath = path;
+            Rpath += "\\Desktop";
+            path += "\\Desktop\\AFD" + getNumDocumentos() + ".dot";
+            File archivo = new File(path);
+            if (!archivo.exists()) {
+                archivo.createNewFile();
+            }
+            //Escribimos dentro del archivo .dot
+            try (PrintWriter write = new PrintWriter(path, "UTF-8")) {
+                write.println("digraph AFD{");
+                write.println("rankdir=LR;");
+                write.println("size=\"13\"");
+
+                //Crear nodo de aceptacion
+                for (int i = 0; i <= this.tablaEstados.size() - 1; i++) {
+                    if (this.tablaEstados.get(i).isAceptacion()) {
+                        write.println(this.tablaEstados.get(i).getIdEstado() + "[peripheries = 2, shape=circle];");
+                    }
+                }
+
+                //Datos de los demas nodos                
+                write.println("node [shape=circle,peripheries = 1];");
+                write.println("node [fontcolor=black];");
+                write.println("edge [color=black];");
+                write.println("secret_node [style=invis];");
+                write.println("secret_node -> S0 [label=\"inicio\"];");
+
+                //Insertar todas las conexiones
+                for (int i = 0; i <= this.tablaEstados.size() - 1; i++) {
+                    for (int j = 0; j <= this.tablaEstados.get(i).getTransiciones().size() - 1; j++) {
+                        write.println(this.tablaEstados.get(i).getIdEstado() + " -> " + this.tablaEstados.get(i).getTransiciones().get(j).getEstadoNext() + "[label=\"" + this.tablaEstados.get(i).getTransiciones().get(j).getValor() + "\"];");
+                    }
+                }
+
+                write.println("}");
+                write.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear el reporte de archivos." + e, "Error con los archivos.", JOptionPane.ERROR_MESSAGE);
+            }
+
+            //Generar la imagen con el comando cmd
+            String pathPng = Rpath + "\\AFD" + getNumDocumentos() + ".png";
+            crearImagen(path, pathPng);
+        }
     }
-    
+
     private void crearImagen(String rutaDot, String rutaPng) {
         try {
             ProcessBuilder pbuild = new ProcessBuilder("dot", "-Tpng", "-o", rutaPng, rutaDot);

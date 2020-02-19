@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class IDE_Window extends javax.swing.JFrame {
 
@@ -29,15 +31,20 @@ public class IDE_Window extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtFile = new javax.swing.JEditorPane();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnLexema = new javax.swing.JButton();
+        btnLexico = new javax.swing.JButton();
+        btnAutomata = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtRegular = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lblImg = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -60,29 +67,42 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 490, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 500, 360));
 
-        jButton1.setText("Generar Autómatas");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 180, 40));
-
-        jButton2.setText("Analizar Entradas");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLexema.setText("Evaluar Lexemas");
+        btnLexema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLexemaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 180, 40));
+        getContentPane().add(btnLexema, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 370, 150, 30));
+
+        btnLexico.setText("Analizador Léxico");
+        btnLexico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLexicoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLexico, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 30));
+
+        btnAutomata.setText("Generar Autómatas");
+        btnAutomata.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAutomataActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 150, 30));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Consola de Salida"));
 
@@ -100,9 +120,9 @@ public class IDE_Window extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -114,37 +134,61 @@ public class IDE_Window extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 970, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 402, 1070, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Distribución"));
+
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTree1MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTree1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 180, 390));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 240, 390));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Imágenes"));
+
+        lblImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImg.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblImg.setMaximumSize(new java.awt.Dimension(1000000000, 1000000000));
+        jScrollPane4.setViewportView(lblImg);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, 260, 390));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 10, 300, 390));
 
         jMenu1.setText("Archivo");
 
@@ -230,20 +274,71 @@ public class IDE_Window extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutomataActionPerformed
+        Practica1_201700988.listConj.clear();
+        Practica1_201700988.listER.clear();
+        Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
+        jTree1.removeAll();
+        jTree1.setModel(Practica1_201700988.upDate.treeVisual());
+        jTree1.updateUI();
+    }//GEN-LAST:event_btnAutomataActionPerformed
+
+    private void btnLexicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexicoActionPerformed
         Practica1_201700988.conteo_Expresiones = 0;
         String entrada = txtFile.getText();
         Practica1_201700988.analizador.Scanner(entrada);
         Practica1_201700988.analizador.imprimirLista(txtConsola);
-        Practica1_201700988.upDate.cargarDatos(Practica1_201700988.analizador.getSalida());
+        Practica1_201700988.analizador.crearPDF();
+        Practica1_201700988.conteoAnalisis++;
+
         //Mostrar contenido cargado al sistema
 //        Practica1_201700988.mostrarConj();
 //        Practica1_201700988.mostrarER();
 //        Practica1_201700988.mostrarLexemas();
-        //Funciones de prueba
-        
+    }//GEN-LAST:event_btnLexicoActionPerformed
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnLexemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexemaActionPerformed
+        txtRegular.setText("");
+        Practica1_201700988.validarLexema.validarLexemas(txtRegular);
+
+    }//GEN-LAST:event_btnLexemaActionPerformed
+
+    private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree1.getSelectionPath().getLastPathComponent();
+        String path = System.getProperty("user.home");
+        lblImg.removeAll();
+        try {
+            for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
+                if (Practica1_201700988.listER.get(i).getId().equals(selectedNode.toString())) {
+                    String numDoc = Practica1_201700988.listER.get(i).getNumDocumentos();                    
+                    switch (selectedNode.getParent().toString()) {
+                        case "Árboles":
+                            path += "\\Desktop\\Arbol" + numDoc + ".png";
+                            ImageIcon icon = new ImageIcon(path);
+                            lblImg.setIcon(icon);
+                            break;
+                        case "Tablas de Siguientes":
+                            path += "\\Desktop\\TablaSiguientes" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        case "Tablas de Estados":
+                            path += "\\Desktop\\TablaEstados" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        case "AFD":
+                            path += "\\Desktop\\AFD" + numDoc + ".png";
+                            lblImg.setIcon(new ImageIcon(path));
+                            break;
+                        default:
+                            //Nada
+                            break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_jTree1MouseClicked
 
     private void saveAsFile() {
         if (fileSelector.showDialog(null, "Guardar Como") == JFileChooser.APPROVE_OPTION) {
@@ -312,16 +407,21 @@ public class IDE_Window extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IDE_Window.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IDE_Window.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -332,8 +432,9 @@ public class IDE_Window extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAutomata;
+    private javax.swing.JButton btnLexema;
+    private javax.swing.JButton btnLexico;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -349,6 +450,10 @@ public class IDE_Window extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTree jTree1;
+    private javax.swing.JLabel lblImg;
     private javax.swing.JTextArea txtConsola;
     private javax.swing.JEditorPane txtFile;
     private javax.swing.JTextArea txtRegular;

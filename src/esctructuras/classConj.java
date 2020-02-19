@@ -1,6 +1,7 @@
 package esctructuras;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class classConj {
 
@@ -10,6 +11,20 @@ public class classConj {
     public classConj(String id) {
         this.id = id;
         this.conjunto = new ArrayList<>();
+    }
+
+    public boolean existeCaracter(String caracter) {
+        Iterator<String> caracteres = conjunto.iterator();
+        while (caracteres.hasNext()) {
+            String caracterEvaluar = caracteres.next();
+
+            if (caracter.equals(caracterEvaluar)) {
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
     public String getId() {

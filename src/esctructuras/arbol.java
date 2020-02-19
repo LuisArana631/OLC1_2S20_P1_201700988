@@ -116,12 +116,12 @@ public class arbol {
         return this.raiz == null;
     }
 
-    public void graficarArbol() throws IOException {
+    public void graficarArbol(String numDoc) throws IOException {
         if (!arbolVacio()) {
             String path = System.getProperty("user.home");
             String Rpath = path;
             Rpath += "\\Desktop";
-            path += "\\Desktop\\Arbol" + Practica1_201700988.conteo_Expresiones + ".dot";
+            path += "\\Desktop\\Arbol" + numDoc + ".dot";
             File archivo = new File(path);
             if (!archivo.exists()) {
                 archivo.createNewFile();
@@ -146,7 +146,7 @@ public class arbol {
             }
 
             //Generar la imagen con el comando cmd
-            String pathPng = Rpath + "\\Archivos" + Practica1_201700988.conteo_Expresiones + ".png";
+            String pathPng = Rpath + "\\Arbol" + numDoc + ".png";
             crearImagen(path, pathPng);
         }
     }
@@ -324,13 +324,13 @@ public class arbol {
         if (nodo.getTipo().equals("operacion") || nodo.getTipo().equals("cerradura")) {
             switch (nodo.getValor()) {
                 case "*":
-                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    insertNext(tablaSiguientes, nodo.getPrimeros(), nodo.getUltimos());
                     break;
                 case ".":
                     insertNext(tablaSiguientes, nodo.getRight().getPrimeros(), nodo.getLeft().getUltimos());
                     break;
                 case "+":
-                    insertNext(tablaSiguientes, nodo.getUltimos(), nodo.getPrimeros());
+                    insertNext(tablaSiguientes, nodo.getPrimeros(), nodo.getUltimos());
                     break;
                 default:
                     //Ignorar
@@ -345,6 +345,7 @@ public class arbol {
         if (nodo.getRight() != null) {
             insertarSiguientes(tablaSiguientes, nodo.getRight());
         }
+
     }
 
     private void insertNext(ArrayList<classSiguientes> tablaSiguientes, String siguientes, String valores) {
