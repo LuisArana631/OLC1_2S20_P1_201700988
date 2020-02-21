@@ -33,12 +33,25 @@ public class validarLexemas {
         String siNo = "si";
         for (int i = 0; i < lexema.length(); i++) {
             String caracter = Character.toString(lexema.charAt(i));
+            System.out.println("-----------------------------------");
+            System.out.println("Concatenado: " + concatenado);
+            System.out.println("Caracter Actual: " + caracter);
+            System.out.println("Estado Actual: " + estadoActual.getIdEstado());
+            System.out.println("-----------------------------------");
             String estadoSiguiente = estadoActual.pasoPermitido(caracter, estadoActual.getIdEstado(), concatenado);
             if (!estadoSiguiente.equals("****Error****")) {
                 estadoActual = afd.get(Practica1_201700988.listER.get(posER).posEstadoActual(estadoSiguiente));
-                concatenado += caracter;
-                siNo = " si";
-            } else {
+                if (estadoSiguiente.equals(estadoActual.getIdEstado())) {
+                    concatenado += caracter;
+                } else {
+                    concatenado = "";
+                }
+                if (estadoActual.isAceptacion()) {
+                    siNo = "si";
+                } else {
+                    siNo = "no";
+                }
+            } else {                
                 siNo = " no";
                 break;
             }

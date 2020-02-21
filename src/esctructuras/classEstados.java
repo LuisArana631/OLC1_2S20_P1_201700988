@@ -35,21 +35,31 @@ public class classEstados {
             }
             if (esConjunto) {
                 if (Practica1_201700988.listConj.get(posConj).existeCaracter(caracter)) {
+                    System.out.println("Evaluado como conjunto");
                     return actualNext.getEstadoNext();
                 }
             } else if (actualNext.getValor().equals(caracter)) {
+                System.out.println("Evaluado como caracter");
                 return actualNext.getEstadoNext();
-            } else if (actualNext.getValor().length() > 1) {
+            } else if (actualNext.getValor().length() > 1 && cadena.length() <= actualNext.getValor().length()) {
                 //Evaluar
+                System.out.println("Evaluado como cadena");
+                System.out.println("Cadena: " + cadena);
+                System.out.println("Cadena Evaluar: " + actualNext.getValor());
+                
                 if (cadena.equals(actualNext.getValor())) {
                     return actualNext.getEstadoNext();
                 } else {
-                    return estadoActual;
+                    if(!iteradorNext.hasNext()){
+                        return estadoActual;
+                    }                    
                 }
 
             }
 
         }
+        
+        System.out.println("Error");
         return "****Error****";
     }
 

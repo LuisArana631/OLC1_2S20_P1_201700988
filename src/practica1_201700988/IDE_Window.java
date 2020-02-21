@@ -292,9 +292,9 @@ public class IDE_Window extends javax.swing.JFrame {
         Practica1_201700988.conteoAnalisis++;
 
         //Mostrar contenido cargado al sistema
-//        Practica1_201700988.mostrarConj();
-//        Practica1_201700988.mostrarER();
-//        Practica1_201700988.mostrarLexemas();
+     //   Practica1_201700988.mostrarConj();
+     //   Practica1_201700988.mostrarER();
+     //   Practica1_201700988.mostrarLexemas();
     }//GEN-LAST:event_btnLexicoActionPerformed
 
     private void btnLexemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLexemaActionPerformed
@@ -310,7 +310,7 @@ public class IDE_Window extends javax.swing.JFrame {
         try {
             for (int i = 0; i < Practica1_201700988.listER.size(); i++) {
                 if (Practica1_201700988.listER.get(i).getId().equals(selectedNode.toString())) {
-                    String numDoc = Practica1_201700988.listER.get(i).getNumDocumentos();                    
+                    String numDoc = Practica1_201700988.listER.get(i).getNumDocumentos();
                     switch (selectedNode.getParent().toString()) {
                         case "Árboles":
                             path += "\\Desktop\\Arbol" + numDoc + ".png";
